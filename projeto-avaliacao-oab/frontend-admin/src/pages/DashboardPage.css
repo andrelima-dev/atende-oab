@@ -1,0 +1,100 @@
+/* frontend-admin/src/pages/DashboardPage.css */
+.dashboard-container {
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Usando a nova fonte */
+  padding: 40px;
+  /* Remova a linha 'margin' se ela existir */
+
+}
+
+.dashboard-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: #A0BFE0; /* Azul mais claro para o título */
+  margin-bottom: 50px;
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.dashboard-card {
+  background-color: #1E293B; /* Fundo dos cards um pouco mais claro */
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid #334155; /* Borda sutil */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.dashboard-card h3 {
+  margin-top: 0;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: #A0BFE0; /* Azul para o título do card */
+  margin-bottom: 15px;
+}
+
+.card-value {
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: #CBD5E1; /* Texto principal mais claro */
+}
+
+.table-title {
+  font-size: 2rem;
+  font-weight: 300;
+  margin-bottom: 25px;
+  color: #A0BFE0;
+  border-bottom: 2px solid #334155;
+  padding-bottom: 15px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #1E293B;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 18px 15px;
+  text-align: left;
+  border-bottom: 1px solid #334155;
+}
+
+th {
+  font-weight: 500;
+  color: #A0BFE0;
+  background-color: #27374D;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #233143;
+}
+
+tbody tr:hover {
+  background-color: #2C3E50;
+}
+
+.comentario-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400px;
+}

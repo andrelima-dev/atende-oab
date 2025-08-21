@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "./dist", // Opcional: Define para onde os arquivos compilados irão
+    "rootDir": "./src" // Opcional: Define onde está seu código fonte
+  },
+  "include": ["src/**/*"] // Garante que apenas a pasta src seja compilada
+}

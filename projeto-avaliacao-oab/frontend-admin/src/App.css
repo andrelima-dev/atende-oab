@@ -1,0 +1,81 @@
+/* frontend-admin/src/App.css */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0; /* Impede a sidebar de encolher */
+  width: 260px;
+  background-color: #161b22;
+  border-right: 1px solid #30363d;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.sidebar-logo {
+  max-width: 100%;
+  margin-bottom: 40px;
+}
+
+.sidebar-nav {
+  flex-grow: 1;
+}
+
+.nav-link {
+  display: block;
+  color: #c9d1d9;
+  text-decoration: none;
+  padding: 12px 15px;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.nav-link.active, .nav-link:hover {
+  background-color: #0d1117;
+  color: #fff;
+}
+
+/* O wrapper para o conteúdo principal */
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.main-header {
+  display: flex;
+  justify-content: flex-end; /* Alinha itens à direita */
+  align-items: center;
+  padding: 0 40px;
+  height: 70px;
+  background-color: #161b22;
+  border-bottom: 1px solid #30363d;
+  flex-shrink: 0; /* Impede o header de encolher */
+}
+
+.logout-button {
+  background-color: transparent;
+  color: #c9d1d9;
+  border: 1px solid #c9d1d9;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.logout-button:hover {
+  background-color: #c92a2a;
+  border-color: #c92a2a;
+  color: #fff;
+}
+
+.main-content {
+  flex-grow: 1;
+  background-color: #0d1117;
+  overflow-y: auto; /* Adiciona scroll se o conteúdo for maior que a tela */
+}

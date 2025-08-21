@@ -1,0 +1,72 @@
+/* src/pages/AvaliacaoPage.css */
+.avaliacao-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px 40px;
+  background-color: #050000;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.avaliacao-header {
+  margin-bottom: 30px;
+}
+
+.avaliacao-header .logo {
+  max-width: 150px;
+  margin-bottom: 20px;
+}
+
+.avaliacao-header h1 {
+  margin-bottom: 8px;
+}
+
+.avaliacao-header p {
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin: 0;
+}
+
+.avaliacao-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Espaçamento entre as categorias */
+}
+
+.rating-category, .comment-category {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espaçamento entre o label e as estrelas/textarea */
+}
+
+.rating-category label, .comment-category label {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.comment-category textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.submit-btn {
+  padding: 15px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #a01216; /* Cor OAB botao */
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: #A61A1E;
+}

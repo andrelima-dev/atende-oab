@@ -1,0 +1,21 @@
+# Arquivos de log gerados pelo NPM
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Pasta de dependências (a maior de todas)
+# Isso impede o envio de milhões de arquivos
+node_modules/
+
+# Arquivos de ambiente - MUITO IMPORTANTE PARA SEGURANÇA
+# Impede que suas senhas e chaves secretas sejam enviadas
+.env
+/backend/.env
+
+# Pastas de build/distribuição
+dist
+build
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
