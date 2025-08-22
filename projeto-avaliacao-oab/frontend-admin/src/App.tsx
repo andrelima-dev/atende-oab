@@ -1,6 +1,11 @@
-import { useState, useEffect } from "react";
-import { UserCard } from "./components/UserCard";
-import { Chart } from "./components/Chart";
+import { useState, useEffect } from 'react';
+
+
+import Card from './components/Card'; 
+import AvaliacoesChart from './components/charts/AvaliacoesChart';
+
+import './App.css';
+
 
 interface User {
   id: number;
@@ -9,60 +14,64 @@ interface User {
   submittedAt: string;
 }
 
+// Interface para definir o formato dos dados que o gráfico espera
+interface ChartData {
+  avaliacoes: User[];
+}
+
 function App() {
   const [users, setUsers] = useState<User[]>([]);
 
-  // Simula fetch de usuários que enviaram o formulário
+  // Simula a busca de dados quando o componente é montado
   useEffect(() => {
-    const fetchUsers = async () => {
-      // Aqui você pode conectar ao seu backend ou API real
-      const data: User[] = [
-        { id: 1, name: "Marcos André", email: "marcos@email.com", submittedAt: "2025-08-22" },
-        { id: 2, name: "Camylle Raquel", email: "camylle@email.com", submittedAt: "2025-08-21" },
-        { id: 3, name: "Raiglelson Barbosa", email: "raiglelson@email.com", submittedAt: "2025-08-20" },
+    const fetchUsers = () => {
+      // Usando dados de exemplo (mock)
+      const mockUsers: User[] = [
+        { id: 1, name: 'André Hunter', email: 'andre@example.com', submittedAt: '2025-08-22' },
+        { id: 2, name: 'Maria Silva', email: 'maria@example.com', submittedAt: '2025-08-21' },
+        { id: 3, name: 'João Souza', email: 'joao@example.com', submittedAt: '2025-08-20' },
       ];
-      setUsers(data);
+      setUsers(mockUsers);
     };
+
     fetchUsers();
-  }, []);
+  }, []); 
+
+  
+  const chartData: ChartData = {
+    avaliacoes: users
+  };
+  // ==================================================================
 
   return (
-    <div className="min-h-screen bg-blue-900 text-white p-6">
-      <h1 className="text-4xl font-bold mb-6">Dashboard de Formulários</h1>
+    <div className="App">
+      <header>
+        <h1>Dashboard de Avaliações</h1>
+      </header>
 
-      {/* Cards de Resumo */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="bg-blue-800 p-6 rounded-xl shadow-lg">
-          <h2 className="text-xl font-semibold">Total de Usuários</h2>
-          <p className="text-3xl mt-2">{users.length}</p>
-        </div>
-        <div className="bg-blue-800 p-6 rounded-xl shadow-lg">
-          <h2 className="text-xl font-semibold">Última Submissão</h2>
-          <p className="text-2xl mt-2">
-            {users.length > 0 ? users[users.length - 1].submittedAt : "-"}
-          </p>
-        </div>
-        <div className="bg-blue-800 p-6 rounded-xl shadow-lg">
-          <h2 className="text-xl font-semibold">Exemplo de Estatística</h2>
-          <p className="text-2xl mt-2">75% completaram o formulário</p>
-        </div>
-      </div>
+      <main>
+        <section>
+          <h2>Gráfico de Respostas</h2>
+          {/* Passando os dados formatados corretamente para o gráfico */}
+          <AvaliacoesChart data={chartData} />
+        </section>
 
-      {/* Gráfico */}
-      <div className="bg-blue-800 p-6 rounded-xl shadow-lg mb-6">
-        <h2 className="text-xl font-semibold mb-4">Submissões por Data</h2>
-        <Chart users={users} />
-      </div>
-
-      {/* Lista de Usuários */}
-      <div className="bg-blue-800 p-6 rounded-xl shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">Usuários que enviaram formulários</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {users.map(user => (
-            <UserCard key={user.id} user={user} />
-          ))}
-        </div>
-      </div>
+        <section>
+          <h2>Usuários Recentes</h2>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+            {/* O erro "Não é possível localizar o módulo './components/Card'"
+              provavelmente vem de um erro de exportação DENTRO do arquivo Card.tsx.
+            */}
+            {users.map(user => (
+              <Card
+                key={user.id}
+                // Lembre-se de passar as props que seu componente Card precisa.
+                // Exemplo: user={user}
+              />
+            ))}
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
