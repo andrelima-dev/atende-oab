@@ -1,34 +1,114 @@
-/* frontend/src/pages/LoginPage.css */
+/* Estilos gerais do container e do formulário */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
-  font-family: sans-serif;
+  min-height: calc(100vh - 70px); /* Ajusta a altura descontando o header */
+  font-family: 'Poppins', sans-serif;
+  color: #e0e0e0;
+  padding: 20px;
 }
+
 .login-form {
-  max-width: 400px;
+  max-width: 450px;
   width: 100%;
   padding: 40px;
-  background-color: #f9f9f9;
+  background-color: #161b22;
+  border: 1px solid #30363d;
   border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   text-align: center;
 }
+
 .login-form .logo {
   max-width: 120px;
   margin-bottom: 20px;
 }
+
+.login-form h2 {
+  margin-bottom: 10px;
+}
+
+.login-form p {
+  color: #8b949e; /* Tom de cinza mais suave */
+}
+
 .password-input {
   width: 100%;
   padding: 12px;
-  margin: 20px 0;
-  border: 1px solid #ddd;
+  margin: 25px 0;
+  border: 1px solid #30363d;
+  background-color: #0d1117;
+  color: #e0e0e0;
   border-radius: 8px;
   font-size: 1rem;
 }
+
+.password-input:focus {
+  background-color: #0d1117;
+  color: #e0e0e0;
+  border-color: #2f81f7; /* Destaque azul ao focar */
+  box-shadow: 0 0 0 3px rgba(47, 129, 247, 0.2);
+}
+
 .error-message {
-  color: #C71F25;
+  color: #f85149;
   margin-top: -10px;
   margin-bottom: 15px;
+}
+
+/* ------------------------------------------- */
+/* --- Código do seu novo botão personalizado --- */
+/* ------------------------------------------- */
+
+/* Remove estilos padrão do botão para que o design funcione */
+button.user-profile {
+  border: none;
+  padding: 0;
+  background: none;
+  width: 131px;
+  height: 51px;
+  display: block; /* Garante o comportamento correto */
+  margin: 20px auto 0; /* Centraliza o botão */
+}
+
+.user-profile {
+  border-radius: 15px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  background: linear-gradient(
+    to bottom right,
+    #2e8eff 0%,
+    rgba(46, 142, 255, 0) 30%
+  );
+  background-color: rgba(46, 142, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-profile:hover,
+.user-profile:focus {
+  background-color: rgba(46, 142, 255, 0.7);
+  box-shadow: 0 0 10px rgba(46, 142, 255, 0.5);
+  outline: none;
+}
+
+.user-profile-inner {
+  width: 127px;
+  height: 47px;
+  border-radius: 13px;
+  background-color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.user-profile-inner svg {
+  width: 27px;
+  height: 27px;
+  fill: #fff;
 }

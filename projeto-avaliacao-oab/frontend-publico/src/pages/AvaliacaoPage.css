@@ -1,75 +1,57 @@
-/* src/pages/AvaliacaoPage.css */
+/* frontend-publico/src/pages/AvaliacaoPage.css */
 .avaliacao-container {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px 40px;
-  background-color: #000000;
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgb(255, 255, 255);
-  font-family: sans-serif;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
-.avaliacao-header {
+.card-avaliacao {
+  width: 100%;
+  max-width: 700px;
+  background-color: #161b22;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.card-body {
+  padding: 40px;
+}
+
+.form-header {
+  text-align: center;
   margin-bottom: 30px;
 }
-.avaliacao-header h1, .avaliacao-header p, .avaliacao-header, .rating-category {
-  color: #ffffff;
-}
-.avaliacao-header .logo {
+
+.form-header .logo {
   max-width: 150px;
   margin-bottom: 20px;
 }
 
-.avaliacao-header h1 {
-  
-  margin-bottom: 8px;
+.form-input {
+  background-color: #0d1117;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
 }
 
-.avaliacao-header p {
-  font-size: 1.1rem;
-  color: #ffffff;
-  margin: 0;
+.form-input:focus {
+  background-color: #0d1117;
+  color: #c9d1d9;
+  border-color: #2f81f7;
+  box-shadow: 0 0 0 3px rgba(47, 129, 247, 0.2);
 }
 
-.avaliacao-form {
-  display: flex;
-  flex-direction: column;
-  gap: 30px; /* Espaçamento entre as categorias */
-}
-
-.rating-category, .comment-category {
-  display: flex;
-  flex-direction: column;
-  gap: 10px; /* Espaçamento entre o label e as estrelas/textarea */
-}
-
-.rating-category label, .comment-category label {
+.btn-submit {
+  padding: 12px;
   font-size: 1.2rem;
   font-weight: 500;
-}
-
-.comment-category textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ffffff;
-  font-size: 1rem;
-  resize: vertical;
-}
-
-.submit-btn {
-  padding: 15px 20px;
+  background-color: #c92a2a;
   border: none;
-  border-radius: 8px;
-  background-color: #c40d13; /* Cor OAB botao */
-  color: rgb(255, 255, 255);
-  font-size: 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s;
 }
 
-.submit-btn:hover {
-  background-color: #ffffff;
+.btn-submit:hover {
+  background-color: #a61e1e;
 }

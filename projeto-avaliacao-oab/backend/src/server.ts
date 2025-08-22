@@ -5,10 +5,10 @@ import dotenv from 'dotenv';
 import { createClient } from '@supabase/supabase-js';
 import jwt from 'jsonwebtoken';
 
-// Carrega as variáveis de ambiente (.env)
+
 dotenv.config();
 
-// --- CONFIGURAÇÕES E CLIENTES ---
+
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
 
@@ -24,11 +24,11 @@ const port = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// --- ROTA DE LOGIN (PÚBLICA) ---
+
 app.post('/api/login', (req, res) => {
   const { password } = req.body;
 
-  // Bloco de investigação para descobrirmos o erro
+  
   console.log("===================================");
   console.log("🕵️ TENTATIVA DE LOGIN RECEBIDA 🕵️");
   console.log("Senha recebida do frontend:", password);
@@ -37,7 +37,7 @@ app.post('/api/login', (req, res) => {
   console.log("===================================");
 
   if (password === process.env.DASHBOARD_PASSWORD) {
-    // Senha correta: cria um token de acesso válido por 8 horas
+  
     const token = jwt.sign({ user: 'admin' }, process.env.JWT_SECRET!, { expiresIn: '8h' });
     res.json({ success: true, token: token });
   } else {
@@ -46,7 +46,7 @@ app.post('/api/login', (req, res) => {
   }
 });
 
-// --- "PORTEIRO" DE SEGURANÇA (MIDDLEWARE) ---
+
 const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1]; // Formato: "Bearer TOKEN"

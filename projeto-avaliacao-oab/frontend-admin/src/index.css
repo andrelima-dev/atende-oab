@@ -1,18 +1,14 @@
-/* frontend-admin/src/index.css */
-
-/* Importa a fonte Poppins do Google Fonts */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
 body {
-  margin: 0;
+  margin: 0; /* <-- ESTA LINHA REMOVE A BORDA BRANCA */
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #0d1117; /* Garante o fundo escuro em toda a página */
+  font-family: 'Poppins', sans-serif;
+  background-color: #0d1117; 
 }
 
 #root {
