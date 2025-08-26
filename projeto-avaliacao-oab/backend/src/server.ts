@@ -1,78 +1,49 @@
-import 'dotenv/config'; // GARANTE QUE O .ENV SEJA LIDO PRIMEIRO DE TUDO
+// backend/src/server.ts
 import express from 'express';
 import cors from 'cors';
-import jwt from 'jsonwebtoken';
-// ==================================================================
-// CORREÇÃO: Adicionando a extensão '.js' ao final da importação local
-import { supabase } from './supabaseClient.js';
-// ==================================================================
+import dotenv from 'dotenv';
+import { createClient } from '@supabase/supabase-js';
+
+dotenv.config();
+
+// ... (código de inicialização do Supabase continua o mesmo)
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
+if (!supabaseUrl || !supabaseKey) { throw new Error("Credenciais do Supabase não encontradas"); }
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// --- ROTA DE LOGIN ---
-// É aqui que a mágica acontece
-app.post('/login', (req, res) => {
-  // Pega a senha que o frontend enviou
-  const { password } = req.body;
-  
-  // Pega a senha correta do seu arquivo .env
-  const correctPassword = process.env.DASHBOARD_PASSWORD;
+// ROTA PARA SALVAR AVALIAÇÕES
+app.post('/api/avaliacoes', async (req, res) => {
+  try {
+    const { nome, oab, processo, setor, notas, comentario } = req.body;
+    const novaAvaliacao = {
+      nome_advogado: nome,
+      numero_ordem: oab,
+      processo: processo,
+      setor: setor,
+      nota_atendimento: notas.suporte_tecnico,
+      nota_clareza: notas.clareza_resolucao,
+      nota_agilidade: notas.agilidade_atendimento,
+      nota_cordialidade: notas.cordialidade,
+      nota_eficiencia: notas.eficiencia,
+      comentario: comentario,
+    };
 
-  // DEBUG: VAMOS MOSTRAR NO TERMINAL O QUE ESTÁ ACONTECENDO
-  console.log('--- Tentativa de Login ---');
-  console.log('Senha recebida do frontend:', password);
-  console.log('Senha correta (do .env):', correctPassword);
-
-  // Verifica se a senha do .env foi carregada
-  if (!correctPassword) {
-    console.error('ERRO GRAVE: A variável DASHBOARD_PASSWORD não foi encontrada no arquivo .env!');
-    return res.status(500).json({ message: 'Erro de configuração no servidor.' });
-  }
-
-  // Compara a senha recebida com a senha correta
-  if (password === correctPassword) {
-    console.log('Resultado: SUCESSO. Senha correta.');
-    // Se a senha estiver correta, cria um "token" de acesso
-    const token = jwt.sign({ user: 'admin' }, process.env.JWT_SECRET!, { expiresIn: '1h' });
-    res.json({ token });
-  } else {
-    console.log('Resultado: FALHA. Senha incorreta.');
-    // Se a senha estiver errada, envia um erro
-    res.status(401).json({ message: 'Senha incorreta' });
+    const { data, error } = await supabase.from('avaliacoes_oab').insert([novaAvaliacao]).select();
+    if (error) throw error;
+    res.status(201).json({ success: true, data: data });
+  } catch (error: any) {
+    console.error("❌ Erro ao salvar avaliação:", error);
+    res.status(400).json({ success: false, error: error.message });
   }
 });
 
+// ... (outras rotas como /api/health, /api/admin/login e GET /api/avaliacoes podem continuar aqui)
 
-// --- OUTRAS ROTAS DO SEU BACKEND ---
-
-// Rota para buscar todas as avaliações
-app.get('/avaliacoes', async (req, res) => {
-    // Aqui deveria ter a verificação do token (middleware), mas vamos simplificar por agora
-    const { data, error } = await supabase.from('avaliacoes').select('*');
-    if (error) {
-        return res.status(500).json({ error: error.message });
-    }
-    res.json(data);
-});
-
-// Rota para salvar uma nova avaliação (pública)
-app.post('/avaliacoes', async (req, res) => {
-    const { nome, email, setor, nota, comentario } = req.body;
-    const { data, error } = await supabase
-        .from('avaliacoes')
-        .insert([{ nome, email, setor, nota, comentario }]);
-
-    if (error) {
-        return res.status(500).json({ error: error.message });
-    }
-    res.status(201).json(data);
-});
-
-
-// --- INICIANDO O SERVIDOR ---
-const PORT = process.env.PORT || 3334; // Use a porta 3334 ou outra que esteja livre
-app.listen(PORT, () => {
-  console.log(`Servidor do backend rodando na porta ${PORT}`);
+app.listen(process.env.PORT || 3001, () => {
+  console.log(`🚀 Servidor backend rodando na porta ${process.env.PORT || 3001}`);
 });

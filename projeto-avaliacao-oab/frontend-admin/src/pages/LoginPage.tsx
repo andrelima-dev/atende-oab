@@ -11,8 +11,8 @@ function LoginPage() {
     setError(''); 
 
     try {
-      
-      const response = await axios.post('http://localhost:3334/login', {
+
+      const response = await axios.post('http://localhost:3001/api/admin/login', {
         password,
       });
       if (response.data.token) {

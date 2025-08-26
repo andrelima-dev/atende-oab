@@ -1,0 +1,16 @@
+/* frontend-admin/src/pages/DashboardPage.css */
+.dashboard-container {
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  padding: 40px;
+  margin: 0;
+  border-radius: 0;
+}
+/* ... (cole o restante do CSS da última vez) ... */
+.chart-wrapper {
+  background-color: #1E293B;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid #334155;
+  margin-bottom: 60px;
+}
+/* ... etc ... */

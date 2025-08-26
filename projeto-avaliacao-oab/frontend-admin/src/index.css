@@ -1,16 +1,14 @@
+/* Coloque o @import da fonte primeiro */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+/* Depois, as diretivas do Tailwind */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
+/* E depois qualquer outro estilo global, como o do body */
 body {
-  margin: 0; /* <-- ESTA LINHA REMOVE A BORDA BRANCA */
+  margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-  background-color: #0d1117; 
-}
-
-#root {
-  width: 100%;
+  /* ... etc ... */
 }

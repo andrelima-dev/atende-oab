@@ -1,0 +1,169 @@
+/* frontend-publico/src/App.css */
+
+/* Estilos Globais */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  background-color: #f0f2f5; /* Fundo cinza claro */
+  color: #333;
+}
+
+/* Layout do App.tsx que você enviou */
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.app-header {
+  background-color: #0d3c84; /* Azul da OAB */
+  color: white;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.app-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.logo-image {
+  height: 50px;
+}
+.logo-text h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+.logo-text p {
+  margin: 0;
+  opacity: 0.9;
+}
+.app-main {
+  flex-grow: 1;
+  padding: 2rem 0;
+}
+.app-footer {
+  background-color: #333;
+  color: #ccc;
+  padding: 1.5rem 0;
+  font-size: 0.9rem;
+}
+.app-footer .app-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-links a {
+  color: #ccc;
+  text-decoration: none;
+  margin-left: 20px;
+}
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* Estilos do Formulário (AvaliacaoPage.tsx) */
+.form-section {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  color: #0d3c84;
+}
+
+.section-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.input-group {
+  display: flex;
+  gap: 2rem;
+}
+
+.input-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-field label, .textarea-field label {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.input-field input, .textarea-field textarea {
+  padding: 0.8rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.setor-selection {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.setor-btn {
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 1rem;
+  flex-grow: 1;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.setor-btn.active {
+  background-color: #0d3c84;
+  color: white;
+  border-color: #0d3c84;
+}
+
+.rating-group {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+.rating-group:last-of-type {
+  border-bottom: none;
+}
+
+.submit-container {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.submit-button {
+  background-color: #166534; /* Verde */
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.submit-button:hover {
+  background-color: #15803d;
+}

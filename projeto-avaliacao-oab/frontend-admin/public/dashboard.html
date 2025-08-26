@@ -235,7 +235,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const API_URL = 'http://localhost:3333/avaliacoes';
+            const API_URL = 'http://localhost:3001/api/avaliaoab';
             const authToken = localStorage.getItem('authToken');
 
             if (!authToken) {
@@ -251,7 +251,7 @@
 
             async function carregarDados() {
                 try {
-                    const response = await fetch(API_URL, {
+                    const response = await axios.get(API_URL, {
                         headers: { 'Authorization': `Bearer ${authToken}` }
                     });
 
