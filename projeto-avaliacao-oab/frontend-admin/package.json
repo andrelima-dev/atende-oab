@@ -10,22 +10,33 @@
     "tailwind:init": "tailwindcss init -p"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.1",
+    "@mui/material": "^7.3.1",
+    "@nivo/bar": "^0.99.0",
+    "@nivo/core": "^0.99.0",
     "axios": "^1.11.0",
+    "chart.js": "^4.5.0",
     "lucide-react": "^0.541.0",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.3.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0",
     "react-router-dom": "^7.8.2",
+    "recharts": "^3.1.2",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^18.3.7",
     "@types/recharts": "^1.8.29",
+    "@types/styled-components": "^5.1.34",
     "@vitejs/plugin-react": "^5.0.1",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.24",
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.2",
-    "vite": "^4.3.9"
+    "vite": "^7.1.3"
   }
 }

@@ -1,55 +1,59 @@
-import React from 'react';
-import AvaliacaoSetores from './components/AvaliacaoSetores';
+// frontend-publico/src/App.tsx
+import AvaliacaoPage from './pages/AvaliacaoPage';
 import './App.css';
 
 function App() {
+
+  const rolarParaTopo = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="app-header">
-        <div className="app-container">
-          <div className="header-content">
-            <div className="logo-container">
-              <div className="logo">
-                <img 
-                  src="/oab-logo.png" 
-                  alt="Logo OAB/MA" 
-                  className="logo-image"
-                  onError={(e) => {
-                    // Fallback se a imagem não carregar
-                    e.currentTarget.style.display = 'none';
-                    const fallback = document.createElement('div');
-                    fallback.innerHTML = `
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="45" fill="#0d3c84" />
-                        <circle cx="50" cy="50" r="35" fill="#e6af17" />
-                        <text x="50" y="55" textAnchor="middle" fill="#0d3c84" fontSize="30" fontWeight="bold">OAB</text>
-                      </svg>
-                    `;
-                    e.currentTarget.parentNode?.appendChild(fallback);
-                  }}
-                />
-              </div>
-              <div className="logo-text">
-                <h1>Sistema de Avaliação</h1>
-                <p>OAB/MA - Seccional Maranhão</p>
-              </div>
+    <div className="app-geral">
+      <header className="cabecalho-app">
+        <div className="cabecalho-container">
+          <div className="area-logo">
+            <img src="/logo-oabma.png" alt="OAB Maranhão Logo" className="logo-cabecalho" />
+            <div className="texto-logo">
+              <h1>Sistema de Avaliação</h1>
+              <p>OAB/MA - Seccional Maranhão</p>
             </div>
           </div>
         </div>
       </header>
       
-      <main className="app-main">
-        <div className="app-container">
-          <AvaliacaoSetores />
-        </div>
+      <main className="conteudo-principal">
+        <AvaliacaoPage />
       </main>
-      
-      <footer className="app-footer">
-        <div className="app-container">
-          <p>© 2025 - Ordem dos Advogados do Brasil -  Gerência de Tecnologia da Informação</p>
-          <div className="footer-links">
-            <a href="https://www.oabma.org.br" target="_blank" rel="noopener noreferrer">Site Oficial</a>
-            <a href="https://pje.oabma.org.br/" target="_blank" rel="noopener noreferrer">Pje OAB</a> 
+
+      <footer className="rodape-app">
+        <div className="rodape-container">
+          <div className="rodape-superior">
+            <div className="rodape-secao secao-logo-social">
+              <img src="/logo-oabma.png" alt="OAB Maranhão Forte" className="logo-rodape" />
+              <div className="icones-sociais">
+                <a href="https://www.instagram.com/oabma/" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
+                <a href="https://x.com/oab_ma" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
+                <a href="https://www.youtube.com/@oabma" aria-label="YouTube"><i className="fab fa-youtube"></i></a>
+                <a href="https://www.facebook.com/OABMA/?locale=pt_BR" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
+              </div>
+            </div>
+            <div className="rodape-secao links-rodape">
+              <a href="https://pje.oabma.org.br/"><i className="fas fa-gavel"></i> pje OAB</a>
+              <a href="https://pje.oabma.org.br/inss-digital"><i className="fas fa-file-alt"></i> Inss Digital</a>
+              <a href="https://pje.oabma.org.br/zone-criminal"><i className="fas fa-balance-scale"></i> Zona Criminal</a>
+              <a href="https://pje.oabma.org.br/portal-advocacia"><i className="fas fa-user-shield"></i> Portal Advocacia</a>
+              <a href="https://pje.oabma.org.br/status-services"><i className="fas fa-concierge-bell"></i> Status Serviços</a>
+            </div>
+          </div>
+          <div className="rodape-inferior">
+            <p>© 2025 - Gerência de Tecnologia da Informação</p>
+            <button onClick={rolarParaTopo} className="botao-voltar-topo" aria-label="Voltar ao topo">
+              <i className="fas fa-arrow-up"></i>
+            </button>
           </div>
         </div>
       </footer>

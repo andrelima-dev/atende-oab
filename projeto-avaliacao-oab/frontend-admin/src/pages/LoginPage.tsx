@@ -1,30 +1,50 @@
-import { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+import axios, { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom'; // 1. IMPORTADO O NAVIGATE
 import './LoginPage.css';
 
 function LoginPage() {
+  const navigate = useNavigate(); // 2. INICIADO O NAVIGATE
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(''); 
+    setIsLoading(true);
+    setError('');
 
     try {
-
       const response = await axios.post('http://localhost:3001/api/admin/login', {
         password,
       });
+
       if (response.data.token) {
         localStorage.setItem('authToken', response.data.token);
-        window.location.href = '/dashboard.html';
+        navigate('/dashboard'); // 3. ALTERADO PARA USAR O NAVIGATE
       } else {
         setError('Resposta inválida do servidor.');
       }
 
     } catch (err) {
-      console.error('Falha no login:', err);
-      setError('Senha incorreta. Tente novamente.');
+      const error = err as AxiosError;
+      console.error('Falha no login:', error);
+
+      if (error.response) {
+        if (error.response.status === 401 || error.response.status === 403) {
+          setError('Senha incorreta. Tente novamente.');
+        } else if (error.response.status === 404) {
+          setError('Erro: Servidor não encontrado (404).');
+        } else {
+          setError('Ocorreu um erro no servidor. Tente mais tarde.');
+        }
+      } else if (error.request) {
+        setError('Não foi possível conectar ao servidor. Verifique sua conexão.');
+      } else {
+        setError('Ocorreu um erro inesperado.');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -44,12 +64,15 @@ function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Senha"
               required
+              disabled={isLoading}
             />
           </div>
           
           {error && <p className="error-message">{error}</p>}
 
-          <button type="submit" className="login-button">Entrar</button>
+          <button type="submit" className="login-button" disabled={isLoading}>
+            {isLoading ? 'Entrando...' : 'Entrar'}
+          </button>
         </form>
       </div>
     </div>

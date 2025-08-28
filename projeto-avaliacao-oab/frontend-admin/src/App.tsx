@@ -1,14 +1,43 @@
+import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
-import './App.css';
-import './pages/LoginPage.css'; // ADICIONE ESTA LINHA PARA IMPORTAR O CSS
+import DashboardPage from './pages/DashboardPage';
+import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+    background: {
+      default: '#141b2d',
+    },
+  },
+  typography: {
+    fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
+  },
+});
+
+function PrivateRoute({ children }: { children: JSX.Element }) {
+  const isAuthenticated = !!localStorage.getItem('authToken');
+  return isAuthenticated ? children : <Navigate to="/" />;
+}
 
 function App() {
-  // O App agora só mostra a página de login,
-  // que por sua vez cuida do redirecionamento.
   return (
-    <div className="App">
-      <LoginPage />
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <DashboardPage />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </Box>
+    </ThemeProvider>
   );
 }
 
