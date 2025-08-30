@@ -1,4 +1,8 @@
-import express, { Request, Response, NextFunction } from 'express';
+
+import express from 'express';
+import type { Request, Response, NextFunction } from 'express';
+
+
 import cors from 'cors';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
@@ -118,3 +122,4 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`✅ Servidor backend rodando na porta ${PORT}`);
 });
+
