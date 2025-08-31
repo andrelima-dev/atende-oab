@@ -1,49 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
-export function RecentEvaluations() {
-  const recentEvaluations = [
-    {
-      id: "1247",
-      lawyer: "Dr. João Silva",
-      sector: "Atendimento ao Público",
-      rating: 5,
-      date: "2024-01-15",
-      comment: "Excelente atendimento, muito prestativo",
-    },
-    {
-      id: "1246",
-      lawyer: "Dra. Maria Santos",
-      sector: "Protocolo",
-      rating: 4,
-      date: "2024-01-15",
-      comment: "Bom atendimento, processo rápido",
-    },
-    {
-      id: "1245",
-      lawyer: "Dr. Carlos Oliveira",
-      sector: "Secretaria",
-      rating: 3,
-      date: "2024-01-14",
-      comment: "Atendimento regular, pode melhorar",
-    },
-    {
-      id: "1244",
-      lawyer: "Dra. Ana Costa",
-      sector: "Tesouraria",
-      rating: 5,
-      date: "2024-01-14",
-      comment: "Muito eficiente e organizado",
-    },
-    {
-      id: "1243",
-      lawyer: "Dr. Pedro Lima",
-      sector: "Biblioteca",
-      rating: 4,
-      date: "2024-01-13",
-      comment: "Boa estrutura e acervo atualizado",
-    },
-  ]
+type RecentEvaluationsProps = {
+  avaliacoes: any[];
+};
+
+export function RecentEvaluations({ avaliacoes }: RecentEvaluationsProps) {
+  const recentEvaluations = [...avaliacoes]
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(0, 5);
 
   const getRatingColor = (rating: number) => {
     if (rating >= 4) return "bg-green-100 text-green-800"
@@ -63,18 +28,16 @@ export function RecentEvaluations() {
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
                   <div className="flex items-center gap-3">
-                    <span className="font-medium text-gray-900">{evaluation.lawyer}</span>
-                    <Badge variant="outline" className="text-xs">
-                      {evaluation.sector}
-                    </Badge>
-                    <Badge className={`text-xs ${getRatingColor(evaluation.rating)}`}>{evaluation.rating} ★</Badge>
+                    <span className="font-medium text-gray-900">{evaluation.nome_advogado}</span>
+                    <Badge variant="outline" className="text-xs">{evaluation.setor}</Badge>
+                    <Badge className={`text-xs ${getRatingColor(evaluation.nota_atendimento)}`}>{evaluation.nota_atendimento} ★</Badge>
                   </div>
-                  <p className="text-sm text-gray-600">{evaluation.comment}</p>
+                  {evaluation.comentario && <p className="text-sm text-gray-600">{evaluation.comentario}</p>}
                 </div>
                 <div className="text-right">
                   <span className="text-xs text-gray-500">#{evaluation.id}</span>
                   <div className="text-xs text-gray-500 mt-1">
-                    {new Date(evaluation.date).toLocaleDateString("pt-BR")}
+                    {new Date(evaluation.created_at).toLocaleDateString("pt-BR")}
                   </div>
                 </div>
               </div>

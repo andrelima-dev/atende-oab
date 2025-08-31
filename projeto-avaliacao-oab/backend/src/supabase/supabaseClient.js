@@ -1,24 +1,29 @@
-// src/supabase/supabaseClient.js
-import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+import 'dotenv/config';
+import { createClient } from '@supabase/supabase-js';
 
-if (!supabaseUrl) throw new Error('VITE_SUPABASE_URL não está definida')
-if (!supabaseAnonKey) throw new Error('VITE_SUPABASE_ANON_KEY não está definida')
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+if (!supabaseUrl) throw new Error('SUPABASE_URL não está definida no arquivo .env do backend');
+if (!supabaseServiceKey) throw new Error('SUPABASE_SERVICE_KEY não está definida no arquivo .env do backend');
+
+export const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
 
 export const handleSupabaseError = (error) => {
-  if (error) throw new Error(error.message)
-}
+  if (error) {
+    console.error('Erro no Supabase:', error.message);
+    throw new Error(error.message);
+  }
+};
 
-export const fetchUsersWithOAB = async () => {
+export const fetchTodasAvaliacoes = async () => {
   const { data, error } = await supabase
-    .from('AvaliaOAB')
+    .from('avaliacoes_oab')
     .select('*')
-    .order('name')
+    .order('created_at', { ascending: false });
   
-  handleSupabaseError(error)
-  return data
-}
+  handleSupabaseError(error);
+  return data;
+};

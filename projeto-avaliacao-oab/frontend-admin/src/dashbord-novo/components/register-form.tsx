@@ -28,10 +28,8 @@ export function RegisterForm() {
     e.preventDefault()
     setIsLoading(true)
 
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 2000))
 
-    // Redirect to dashboard
     window.location.href = "/dashboard"
   }
 
@@ -45,7 +43,6 @@ export function RegisterForm() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
         <div className="w-full max-w-md">
           <div className="space-y-6">
-            {/* Mobile logo */}
             <div className="lg:hidden flex items-center justify-center mb-8">
               <div className="w-12 h-12 bg-slate-900 rounded-lg flex items-center justify-center mr-3">
                 <span className="text-white font-bold text-xl">C</span>

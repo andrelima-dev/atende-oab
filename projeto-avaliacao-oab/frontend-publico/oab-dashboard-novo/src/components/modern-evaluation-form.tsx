@@ -87,7 +87,7 @@ const AlertIcon = ({ className }: { className?: string }) => (
 )
 
 import StarRating from "./star-rating"
-import SuccessScreen from "./success-screen"
+import SuccessScreen from './success-screen';
 import ProgressIndicator from "./progress-indicator"
 
 export default function ModernEvaluationForm() {

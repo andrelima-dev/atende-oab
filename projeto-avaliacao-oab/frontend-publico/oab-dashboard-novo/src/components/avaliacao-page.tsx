@@ -1,8 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { supabase } from "../lib/supabaseClient";
 import StarRating from "./star-rating"
-import SuccessScreen from "./success-screen"
+import SuccessScreen from './success-screen';
 import ProgressIndicator from "./progress-indicator"
 
 
@@ -41,16 +42,13 @@ const AlertIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-
-
-
 const setores = ["Financeiro / Tesouraria", "Tecnologia da Informação", "TED", "ESA/MA"]
 const avaliacaoCategories = [
-  { key: "suporte", label: "Suporte prestado", question: "O setor atende às demandas de forma satisfatória?" },
-  { key: "clareza", label: "Clareza na resolução do problema", question: "As respostas foram claras, completas e compreensíveis?" },
-  { key: "agilidade", label: "Agilidade da resposta", question: "O setor responde rapidamente às solicitações?" },
-  { key: "cordialidade", label: "Cordialidade / Atendimento", question: "O trato com o usuário é respeitoso e profissional?" },
-  { key: "eficiencia", label: "Eficiência / Resultado final", question: "O problema foi efetivamente resolvido?" },
+  { key: "nota_atendimento", label: "Suporte prestado", question: "O setor atende às demandas de forma satisfatória?" },
+  { key: "nota_clareza", label: "Clareza na resolução do problema", question: "As respostas foram claras, completas e compreensíveis?" },
+  { key: "nota_agilidade", label: "Agilidade da resposta", question: "O setor responde rapidamente às solicitações?" },
+  { key: "nota_cordialidade", label: "Cordialidade / Atendimento", question: "O trato com o usuário é respeitoso e profissional?" },
+  { key: "nota_eficiencia", label: "Eficiência / Resultado final", question: "O problema foi efetivamente resolvido?" },
 ]
 
 export default function AvaliacaoPage() {
@@ -61,7 +59,7 @@ export default function AvaliacaoPage() {
   const [oab, setOab] = useState("")
   const [setorSelecionado, setSetorSelecionado] = useState("")
   const [numeroProcesso, setNumeroProcesso] = useState("Não aplicável")
-  const [ratings, setRatings] = useState({ suporte: 0, clareza: 0, agilidade: 0, cordialidade: 0, eficiencia: 0 })
+  const [ratings, setRatings] = useState({ nota_atendimento: 0, nota_clareza: 0, nota_agilidade: 0, nota_cordialidade: 0, nota_eficiencia: 0 })
   const [comentario, setComentario] = useState("")
   const [mensagem, setMensagem] = useState({ tipo: "", texto: "" })
 
@@ -79,7 +77,7 @@ export default function AvaliacaoPage() {
     setNome("")
     setOab("")
     setSetorSelecionado("")
-    setRatings({ suporte: 0, clareza: 0, agilidade: 0, cordialidade: 0, eficiencia: 0 })
+    setRatings({ nota_atendimento: 0, nota_clareza: 0, nota_agilidade: 0, nota_cordialidade: 0, nota_eficiencia: 0 })
     setComentario("")
     setMensagem({ tipo: "", texto: "" })
   }
@@ -112,33 +110,31 @@ export default function AvaliacaoPage() {
   const handleSubmit = async () => {
     setLoading(true)
     setMensagem({ tipo: "", texto: "" })
+
     const avaliacaoParaEnviar = {
-      nome, oab, processo: numeroProcesso, setor: setorSelecionado, comentario,
-      notas: {
-        suporte_tecnico: ratings.suporte,
-        clareza_resolucao: ratings.clareza,
-        agilidade_atendimento: ratings.agilidade,
-        cordialidade: ratings.cordialidade,
-        eficiencia: ratings.eficiencia,
-      },
+      nome_advogado: nome,
+      numero_ordem: oab,
+      processo: numeroProcesso,
+      setor: setorSelecionado,
+      comentario: comentario,
+      nota_atendimento: ratings.nota_atendimento,
+      nota_clareza: ratings.nota_clareza,
+      nota_agilidade: ratings.nota_agilidade,
+      nota_cordialidade: ratings.nota_cordialidade,
+      nota_eficiencia: ratings.nota_eficiencia,
     }
-    try {
-      setMensagem({ tipo: "info", texto: "A enviar a sua avaliação..." })
-      const response = await fetch("http://localhost:3001/api/avaliacoes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(avaliacaoParaEnviar),
-      })
-      if (response.ok) {
-        setFoiEnviado(true)
-      } else {
-        throw new Error("Erro na resposta do servidor")
-      }
-    } catch (error) {
-      setMensagem({ tipo: "error", texto: "Ocorreu um erro ao conectar com o servidor. Tente novamente." })
-      console.error("Erro ao enviar avaliação:", error)
-    } finally {
-      setLoading(false)
+
+    const { error } = await supabase
+      .from('avaliacoes_oab')
+      .insert([avaliacaoParaEnviar]);
+
+    if (error) {
+      console.error("Erro ao enviar para o Supabase:", error);
+      setMensagem({ tipo: "error", texto: "Ocorreu um erro ao salvar sua avaliação. Tente novamente." });
+      setLoading(false);
+    } else {
+      setFoiEnviado(true);
+      setLoading(false);
     }
   }
 
@@ -153,13 +149,11 @@ export default function AvaliacaoPage() {
 
   return (
     <div className="min-h-screen bg-[#2a3950]">
-      
-    
       <header className="border-b border-slate-200 bg-white shadow-sm">
         <div className="container mx-auto px-6 py-4">
           <div className="flex justify-center items-center gap-4">
             <img 
-              src="oab-logo.png" 
+              src="/oab-logo.png" 
               alt="Logo OAB Maranhão" 
               className="h-12"
             />
@@ -173,10 +167,8 @@ export default function AvaliacaoPage() {
       
       <div className="container mx-auto px-6 py-8 max-w-4xl">
         <ProgressIndicator currentStep={currentStep} totalSteps={steps.length} steps={steps} />
-        {/* Container do formulário agora com fundo branco */}
         <div className="bg-white rounded-lg shadow-lg">
           <div className="text-center pb-6 pt-6 px-6 border-b border-gray-200">
-            {/* Cor do título ajustada para o fundo branco */}
             <h2 className="text-2xl text-blue-700 font-bold">
               {steps[currentStep]}
             </h2>
@@ -186,7 +178,6 @@ export default function AvaliacaoPage() {
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    {/* Cores de texto e inputs ajustadas */}
                     <label htmlFor="nome" className="flex items-center gap-2 text-sm font-medium text-gray-700">
                       <UserIcon className="w-4 h-4" /> Nome Completo *
                     </label>
@@ -209,7 +200,6 @@ export default function AvaliacaoPage() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {setores.map((setor) => (
-                    // Cores do botão de setor ajustadas
                     <button key={setor} className={`h-16 text-left justify-start p-4 transition-all border rounded-md ${setorSelecionado === setor ? "bg-blue-600 text-white border-blue-600 ring-2 ring-blue-500 ring-offset-2 ring-offset-white" : "bg-white text-gray-700 border-gray-300 hover:border-blue-500"}`} onClick={() => setSetorSelecionado(setor)}>
                       <div>
                         <div className="font-medium">{setor}</div>
@@ -264,34 +254,34 @@ export default function AvaliacaoPage() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-                        <div className="px-4 py-3 border-b border-gray-200"><h4 className="text-sm font-medium text-slate-800">Dados Pessoais</h4></div>
-                        <div className="p-4 space-y-2">
-                            <div><span className="text-sm font-medium text-gray-700">Nome:</span><p className="text-sm text-gray-600">{nome}</p></div>
-                            <div><span className="text-sm font-medium text-gray-700">OAB:</span><p className="text-sm text-gray-600">{oab}</p></div>
-                            <div><span className="text-sm font-medium text-gray-700">Setor:</span><p className="text-sm text-gray-600">{setorSelecionado}</p></div>
-                        </div>
+                      <div className="px-4 py-3 border-b border-gray-200"><h4 className="text-sm font-medium text-slate-800">Dados Pessoais</h4></div>
+                      <div className="p-4 space-y-2">
+                        <div><span className="text-sm font-medium text-gray-700">Nome:</span><p className="text-sm text-gray-600">{nome}</p></div>
+                        <div><span className="text-sm font-medium text-gray-700">OAB:</span><p className="text-sm text-gray-600">{oab}</p></div>
+                        <div><span className="text-sm font-medium text-gray-700">Setor:</span><p className="text-sm text-gray-600">{setorSelecionado}</p></div>
+                      </div>
                     </div>
                     <div className="bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-                        <div className="px-4 py-3 border-b border-gray-200"><h4 className="text-sm font-medium text-slate-800">Avaliação</h4></div>
-                        <div className="p-4 space-y-2">
-                            <div className="flex justify-between items-center"><span className="text-sm font-medium text-gray-700">Média Geral:</span><span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-sm font-medium">{getMediaGeral()} ⭐</span></div>
-                            {avaliacaoCategories.map((category) => (
-                                <div key={category.key} className="flex justify-between items-center"><span className="text-xs text-gray-600">{category.label}:</span><span className="text-xs text-slate-800">{ratings[category.key as keyof typeof ratings]}/5</span></div>
-                            ))}
-                        </div>
+                      <div className="px-4 py-3 border-b border-gray-200"><h4 className="text-sm font-medium text-slate-800">Avaliação</h4></div>
+                      <div className="p-4 space-y-2">
+                        <div className="flex justify-between items-center"><span className="text-sm font-medium text-gray-700">Média Geral:</span><span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-sm font-medium">{getMediaGeral()} ⭐</span></div>
+                        {avaliacaoCategories.map((category) => (
+                          <div key={category.key} className="flex justify-between items-center"><span className="text-xs text-gray-600">{category.label}:</span><span className="text-xs text-slate-800">{ratings[category.key as keyof typeof ratings]}/5</span></div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                   {comentario && (
                     <div className="bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-                        <div className="px-4 py-3 border-b border-gray-200"><h4 className="text-sm font-medium text-slate-800">Comentário</h4></div>
-                        <div className="p-4"><p className="text-sm text-gray-600">{comentario}</p></div>
+                      <div className="px-4 py-3 border-b border-gray-200"><h4 className="text-sm font-medium text-slate-800">Comentário</h4></div>
+                      <div className="p-4"><p className="text-sm text-gray-600">{comentario}</p></div>
                     </div>
                   )}
               </div>
             )}
             {mensagem.texto && (
               <div className={`p-4 rounded-md border ${mensagem.tipo === "error" ? "border-red-500/50 bg-red-500/10 text-red-700" : "border-blue-500/50 bg-blue-500/10 text-blue-700"}`}>
-                  <div className="flex items-center gap-2"><AlertIcon className="h-4 w-4" /><span className="text-sm">{mensagem.texto}</span></div>
+                <div className="flex items-center gap-2"><AlertIcon className="h-4 w-4" /><span className="text-sm">{mensagem.texto}</span></div>
               </div>
             )}
             <div className="flex justify-between pt-6 border-t border-gray-200">
@@ -312,4 +302,3 @@ export default function AvaliacaoPage() {
     </div>
   )
 }
-

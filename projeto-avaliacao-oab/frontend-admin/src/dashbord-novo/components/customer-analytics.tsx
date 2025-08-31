@@ -61,14 +61,12 @@ export default function CustomerAnalytics() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:gap-6">
-        {/* Chart - Full width on mobile */}
         <div className="h-32 sm:h-48 w-full flex justify-center">
           <div className="w-32 sm:w-48 h-32 sm:h-48">
             <Doughnut data={customerData} options={chartOptions} />
           </div>
         </div>
 
-        {/* Stats - Below chart on mobile */}
         <div className="space-y-3 sm:space-y-4">
           {customerStats.map((stat) => (
             <div key={stat.label} className="flex items-center justify-between">
