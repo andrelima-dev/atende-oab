@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from './lib/supabaseClient';
 import SuccessScreen from './components/success-screen';
@@ -39,19 +38,15 @@ export default function App() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    if (params.get('status') === 'success') {
+      setFoiEnviado(true);
+    }
     const processo = params.get("processo");
     if (processo) setNumeroProcesso(processo);
   }, []);
 
   const resetarFormulario = () => {
-    setFoiEnviado(false);
-    setCurrentStep(0);
-    setNome("");
-    setOab("");
-    setSetorSelecionado("");
-    setRatings({ nota_atendimento: 0, nota_clareza: 0, nota_agilidade: 0, nota_cordialidade: 0, nota_eficiencia: 0 });
-    setComentario("");
-    setMensagem({ tipo: "", texto: "" });
+    window.location.href = window.location.pathname;
   };
 
   const handleRatingChange = (category: string, rating: number) => {
@@ -103,8 +98,7 @@ export default function App() {
       setMensagem({ tipo: "error", texto: "Ocorreu um erro ao salvar sua avaliação. Tente novamente." });
       setLoading(false);
     } else {
-      setFoiEnviado(true);
-      setLoading(false);
+      window.location.href = window.location.pathname + '?status=success';
     }
   };
 
@@ -114,8 +108,8 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#2a3950] flex flex-col">
-      <header className="w-full border-b border-gray-700 bg-[#0F172A] shadow-sm">
+    <div className="min-h-screen bg-[#0F172A] flex flex-col">
+      <header className="w-full border-b border-slate-700 bg-[#0F172A] shadow-sm">
         <div className="container mx-auto px-6 py-4">
           <div className="flex justify-center items-center gap-4">
             <img 
@@ -265,7 +259,7 @@ export default function App() {
           </div>
         )}
       </main>
-
+      
       <Footer />
     </div>
   );

@@ -95,7 +95,6 @@ export default function ModernEvaluationForm() {
   const [foiEnviado, setFoiEnviado] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  // Form data
   const [nome, setNome] = useState("")
   const [oab, setOab] = useState("")
   const [setorSelecionado, setSetorSelecionado] = useState("")
@@ -148,7 +147,7 @@ export default function ModernEvaluationForm() {
       case 2:
         return Object.values(ratings).every((rating) => rating > 0)
       case 3:
-        return true // Comments are optional
+        return true
       case 4:
         return true
       default:
@@ -225,7 +224,6 @@ export default function ModernEvaluationForm() {
 
   return (
     <div className="min-h-screen text-slate-800 bg-slate-800">
-      {/* Header */}
       <header className="border-b bg-white shadow-sm">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center gap-3 font-sans font-semibold leading-7 tracking-normal text-justify">
@@ -253,7 +251,6 @@ export default function ModernEvaluationForm() {
           </div>
 
           <div className="p-6 space-y-6">
-            {/* Step 0: Identification */}
             {currentStep === 0 && (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -289,7 +286,6 @@ export default function ModernEvaluationForm() {
               </div>
             )}
 
-            {/* Step 1: Sector Selection */}
             {currentStep === 1 && (
               <div className="space-y-4">
                 <div className="text-center mb-6">
@@ -317,7 +313,6 @@ export default function ModernEvaluationForm() {
               </div>
             )}
 
-            {/* Step 2: Ratings */}
             {currentStep === 2 && (
               <div className="space-y-6">
                 <div className="text-center mb-6">
@@ -352,7 +347,6 @@ export default function ModernEvaluationForm() {
               </div>
             )}
 
-            {/* Step 3: Comments */}
             {currentStep === 3 && (
               <div className="space-y-4">
                 <div className="text-center mb-6">
@@ -374,7 +368,6 @@ export default function ModernEvaluationForm() {
               </div>
             )}
 
-            {/* Step 4: Confirmation */}
             {currentStep === 4 && (
               <div className="space-y-6">
                 <div className="text-center mb-6">
@@ -440,7 +433,6 @@ export default function ModernEvaluationForm() {
               </div>
             )}
 
-            {/* Messages */}
             {mensagem.texto && (
               <div
                 className={`p-4 rounded-md border ${
@@ -456,7 +448,6 @@ export default function ModernEvaluationForm() {
               </div>
             )}
 
-            {/* Navigation Buttons */}
             <div className="flex justify-between pt-6 border-t">
               <button
                 onClick={handlePrevious}
