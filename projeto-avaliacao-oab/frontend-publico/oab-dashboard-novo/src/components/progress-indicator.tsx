@@ -29,7 +29,7 @@ export default function ProgressIndicator({ currentStep, totalSteps, steps }: Pr
           </div>
         ))}
       </div>
-      <div className="text-sm text-center text-white font-medium">
+      <div className="text-sm text-center text-white font-medium font-medium">
         Etapa {currentStep + 1} de {totalSteps}: {steps[currentStep]}
       </div>
     </div>
