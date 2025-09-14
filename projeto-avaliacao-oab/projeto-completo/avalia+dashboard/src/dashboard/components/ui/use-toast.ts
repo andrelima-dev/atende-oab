@@ -1,3 +1,9 @@
-import { useToast, toast } from "@/hooks/use-toast";
 
-export { useToast, toast };
+export function useToast() {
+  console.log("Usei o toast!");
+}
+
+export const toast = {
+  show: () => console.log("Mostrei o toast!")
+};
+

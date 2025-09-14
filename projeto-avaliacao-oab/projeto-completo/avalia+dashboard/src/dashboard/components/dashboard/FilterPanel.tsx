@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Button } from "../ui/button";
@@ -34,18 +35,29 @@ export const FilterPanel = ({
   onPeriodChange,
   onRefresh,
 }: FilterPanelProps) => {
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefreshClick = () => {
+    setIsRefreshing(true);
+    onRefresh();
+    // Simula um tempo de carregamento para mostrar o ícone de refresh
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 1000);
+  };
+
   return (
     <Card className="shadow-card mb-6">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-primary">
-          <Filter className="h-5 w-5" />
+      <CardHeader className="flex flex-row items-center justify-between pb-4">
+        <CardTitle className="flex items-center gap-2 text-primary text-xl">
+          <Filter className="h-6 w-6" />
           Filtros
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label className="text-sm font-medium text-muted-foreground mb-2 block">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-muted-foreground block">
               Setor
             </label>
             <Select value={selectedSector} onValueChange={onSectorChange}>
@@ -62,8 +74,8 @@ export const FilterPanel = ({
             </Select>
           </div>
 
-          <div>
-            <label className="text-sm font-medium text-muted-foreground mb-2 block">
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-muted-foreground block">
               Período
             </label>
             <Select value={selectedPeriod} onValueChange={onPeriodChange}>
@@ -82,11 +94,12 @@ export const FilterPanel = ({
 
           <div className="flex items-end">
             <Button
-              onClick={onRefresh}
-              variant="outline"
-              className="w-full transition-smooth hover:bg-primary hover:text-primary-foreground"
+              onClick={handleRefreshClick}
+              variant="default"
+              className="w-full transition-all bg-primary hover:bg-primary-hover text-primary-foreground font-semibold"
+              disabled={isRefreshing}
             >
-              <RefreshCw className="h-4 w-4 mr-2" />
+              <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`} />
               Atualizar
             </Button>
           </div>
