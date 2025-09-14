@@ -1,0 +1,9 @@
+/* src/pages/dashboard.css */
+.dashboard-theme {
+  --background: 240 5% 96%; /* Cinza bem claro */
+  --foreground: 222.2 47.4% 11.2%; /* Preto */
+  --card: 0 0% 100%; /* Branco */
+  --card-foreground: 222.2 47.4% 11.2%; /* Preto */
+  --border: 214.3 31.8% 91.4%;
+  --ring: 222.2 47.4% 11.2%;
+}

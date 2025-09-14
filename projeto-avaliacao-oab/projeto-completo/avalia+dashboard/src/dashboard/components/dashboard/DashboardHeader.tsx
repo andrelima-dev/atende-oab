@@ -1,19 +1,29 @@
 import { Badge } from "../ui/badge";
-import { Card } from "../ui/card";
 
 export const DashboardHeader = () => {
+  const currentDate = new Date().toLocaleDateString('pt-BR');
+
   return (
-    <div className="gradient-primary text-white p-8 rounded-lg shadow-elevated mb-8">
+    <div className="bg-primary text-primary-foreground p-6 md:p-8 rounded-xl shadow-lg mb-8">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">Dashboard Institucional</h1>
-          <p className="text-white/90 text-lg">Ordem dos Advogados do Brasil - Seção Maranhão</p>
+        
+        <div className="flex items-center gap-4 md:gap-6">
+          <img 
+            src="/logo-oabma.png" 
+            alt="Logo OAB-MA" 
+            className="h-16 w-auto hidden sm:block"
+          />
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold">Dashboard Avaliações</h1>
+            <p className="text-white/80 text-base md:text-lg">Ordem dos Advogados do Brasil - OABMA</p>
+          </div>
         </div>
-        <div className="text-right">
-          <Badge variant="secondary" className="bg-white/20 text-white border-white/30 mb-2">
+        
+        <div className="text-right flex-shrink-0">
+          <Badge variant="secondary" className="bg-white/10 text-white border-white/20 mb-2">
             Sistema de Avaliação
           </Badge>
-          <p className="text-white/80 text-sm">Última atualização: {new Date().toLocaleDateString('pt-BR')}</p>
+          <p className="text-white/70 text-xs md:text-sm">Última atualização: {currentDate}</p>
         </div>
       </div>
     </div>

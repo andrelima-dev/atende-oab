@@ -3,19 +3,49 @@
 @tailwind utilities;
 
 @layer base {
+  /*
+   * Tema claro.
+   * Por padrão, sua aplicação usará estas cores.
+   */
   :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --ring: 212.7 26.8% 83.9%;
+    --oab-dark-blue: 213 100% 19%; /* #002D62 */
+    --oab-light-blue: 213 42% 53%; /* #4F81BD */
+    --oab-white: 0 0% 100%;       /* #FFFFFF */
+    --oab-black: 0 0% 0%;         /* #000000 */
+    --page-background: 222.2 47.4% 97.4%; /* NOVO: Cinza claro para o fundo da página (slate-50) */
+
+    --background: var(--page-background); /* MUDANÇA: Usando a nova cor de fundo */
+    --foreground: var(--oab-black);
+
+    --card: var(--oab-white);
+    --card-foreground: var(--oab-black);
+
+    --primary: var(--oab-dark-blue);
+    --primary-foreground: var(--oab-white);
+
+    --secondary: var(--oab-light-blue);
+    --secondary-foreground: var(--oab-white);
+    
+    /* ... o restante das suas variáveis de cor ... */
   }
- 
+
+  /*
+   * Tema escuro.
+   * Este tema será ativado se a classe "dark" for aplicada ao HTML.
+   */
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --ring: 212.7 26.8% 83.9%;
+    --background: var(--oab-dark-blue);
+    --foreground: var(--oab-white);
+    --card: 213 80% 12%;
+    --card-foreground: var(--oab-white);
+    --primary: var(--oab-white);
+    --primary-foreground: var(--oab-dark-blue);
+    --secondary: var(--oab-light-blue);
+    --secondary-foreground: var(--oab-white);
+    /* ... o restante das suas variáveis de cor para o tema escuro ... */
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
@@ -23,12 +53,4 @@
   body {
     @apply bg-background text-foreground;
   }
-}
-
-
-html, body, #root {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
 }

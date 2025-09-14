@@ -1,13 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from "react-router-dom";
-import App from './App.tsx';
-import './index.css'; 
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import App from './App.tsx'
+import './index.css' // Importa os estilos globais que configuramos
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter> {/* <-- PASSO 2: "ABRAÇAR" O APP */}
+    <BrowserRouter>
       <App />
     </BrowserRouter>
   </React.StrictMode>,
-);
+)
