@@ -6,7 +6,6 @@ import { SectorChart } from "@/dashboard/components/dashboard/SectorChart";
 import { RecentEvaluations } from "@/dashboard/components/dashboard/RecentEvaluations";
 import { FilterPanel } from "@/dashboard/components/dashboard/FilterPanel";
 
-// Define a interface para sua tabela 'avaliacoes_oab'
 interface Avaliacao {
   id: number;
   nome_advogado: string;
@@ -23,7 +22,6 @@ interface Avaliacao {
   processo: string | null;
 }
 
-// Interface compatível com RecentEvaluations
 interface Evaluation {
   id: number;
   advogado: string;
@@ -49,7 +47,6 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // normalização de texto
   const normalizeText = (text: string): string =>
     text
       .normalize("NFD")
@@ -57,17 +54,13 @@ const Index = () => {
       .toLowerCase()
       .trim();
 
-  // mapa de setores → chave única
 const sectorKeys: Record<string, string> = {
-  // Adicione a chave COM espaços para corresponder ao seu banco de dados
   "financeiro / tesouraria": "financeiro", 
   
-  // Mantenha as outras para garantir
   "financeiro": "financeiro",
   "financeiro/tesouraria": "financeiro",
   "tesouraria": "financeiro",
 
-  // Outros setores
   "tecnologia da informacao": "ti",
   "ti": "ti",
   "ted": "ted",
@@ -100,24 +93,20 @@ const sectorKeys: Record<string, string> = {
     fetchAvaliacaos();
   }, []);
 
-  // Lógica de filtragem
   const filteredEvaluations = avaliacoes.filter((item) => {
     const itemSectorKey = getSectorKey(item.setor);
 
-    // --- INÍCIO DO CÓDIGO DE DEBUG ---
-    // Este bloco só vai exibir logs quando o filtro "financeiro" estiver ativo
     if (selectedSector === "financeiro") {
       console.log("--- Checando avaliação para o setor Financeiro ---");
       console.log("Filtro selecionado (selectedSector):", selectedSector);
-      console.log("Setor do item no banco (item.setor):", `'${item.setor}'`); // Adicionado aspas para ver espaços
-      console.log("Setor do item após normalização (itemSectorKey):", `'${itemSectorKey}'`); // Adicionado aspas para ver espaços
+      console.log("Setor do item no banco (item.setor):", `'${item.setor}'`);
+      console.log("Setor do item após normalização (itemSectorKey):", `'${itemSectorKey}'`);
       console.log(
         `A comparação será: '${itemSectorKey}' === '${selectedSector}'? ->`,
         itemSectorKey === selectedSector
       );
       console.log("-------------------------------------------------");
     }
-    // --- FIM DO CÓDIGO DE DEBUG ---
 
     const isSectorMatch =
       selectedSector === "all" || itemSectorKey === selectedSector;
@@ -155,7 +144,6 @@ const sectorKeys: Record<string, string> = {
     return isSectorMatch && isPeriodMatch;
   });
 
-  // Função para formatar os dados do Supabase para o formato dos componentes
   const formatEvaluations = (data: Avaliacao[]): Evaluation[] => {
     return data.map((item) => {
       const notas = [
@@ -185,7 +173,6 @@ const sectorKeys: Record<string, string> = {
 
   const formattedEvaluations = formatEvaluations(filteredEvaluations);
 
-  // Lógica de cálculo dos dados a partir do array `filteredEvaluations`
   const overallAverage =
     filteredEvaluations.length > 0
       ? (
@@ -250,7 +237,6 @@ const sectorKeys: Record<string, string> = {
     console.log("Refreshing data...");
   };
 
-  // Condicional de carregamento e erro
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">

@@ -1,10 +1,8 @@
-/* index.css */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* AQUI ESTÃO SUAS VARIAVEIS GLOBAIS - NÃO MEXA AQUI */
 @layer base {
   :root {
     --background: 222.2 84% 4.9%;
@@ -18,12 +16,10 @@
   }
 }
 
-/* --- CRIE O SEU TEMA LOCAL AQUI --- */
 .dashboard-theme {
-  --background: 0 0% 100%; /* Exemplo: Fundo branco */
-  --foreground: 222.2 47.4% 11.2%; /* Exemplo: Texto preto */
+  --background: 0 0% 100%;
+  --foreground: 222.2 47.4% 11.2%;
   --ring: 214.3 31.8% 91.4%;
-  /* adicione outras cores que você queira mudar */
 }
 
 @layer base {
