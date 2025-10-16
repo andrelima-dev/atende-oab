@@ -1,147 +1,96 @@
-Projeto Avaliação OAB – Atende OAB (versão completa)
 
+Atende OAB
+📖 Sobre o Projeto
+O Atende OAB é um sistema web desenvolvido para a Ordem dos Advogados do Brasil - Seccional Maranhão (OAB/MA). O principal objetivo do projeto é coletar feedback estruturado dos advogados sobre os serviços e o atendimento prestado pelos setores internos, como Tesouraria, TI, TED, entre outros.
 
-Uma plataforma para coletar, gerenciar e analisar avaliações de atendimento em setores da OAB/MA, com interfaces para advogados e painel administrativo.
+Com esta ferramenta, a OAB/MA pode mensurar a satisfação dos seus associados, identificar pontos de melhoria e tomar decisões baseadas em dados para otimizar a qualidade do atendimento.
 
-1. Visão Geral
+✨ Funcionalidades
+O sistema conta com as seguintes funcionalidades:
 
-O Projeto Avaliação OAB — parte do sistema Atende OAB — tem por objetivo central permitir que advogados classifiquem serviços e setores (Tesouraria, TI, TED, etc.) por meio de questionários, e que gestores internos possam visualizar estatísticas, relatórios e dados analíticos dessas avaliações.
+✅ Avaliação Pública: Permite que os advogados preencham um formulário estruturado para avaliar setores e serviços específicos.
 
-Ele busca:
+🔑 Autenticação e Controle: O backend gerencia quem pode acessar o painel administrativo e quem pode submeter avaliações.
 
-Dar voz aos usuários (advogados) para apontar melhorias
+📊 Painel Administrativo: Oferece um dashboard com métricas, gráficos e estatísticas sobre as avaliações, como média de notas e número de avaliações.
 
-Automatizar a coleta de dados de satisfação
+🔎 Filtragem e Segmentação: Permite filtrar as avaliações por setor, data e outros critérios específicos.
 
-Prover dashboards úteis para tomada de decisão
+📄 Exportação e Relatórios: Gera relatórios em formato CSV, Excel ou PDF para análise externa.
 
-Promover transparência e monitoramento dentro da instituição
+⚙️ Gerenciamento de Setores e Perguntas: Administradores podem criar, editar ou remover setores, perguntas e escalas de resposta.
 
-2. Recursos Principais
+📱 Interface Responsiva: A aplicação é compatível com dispositivos móveis e se adapta a diferentes tamanhos de tela.
 
-Aqui estão os módulos/funcionalidades esperadas (ou já implementadas):
+🛠️ Tecnologias Utilizadas
+Este projeto foi desenvolvido utilizando as seguintes tecnologias:
 
-Módulo / Área	Funcionalidade	Descrição
-Avaliação pública	Formulário de avaliação	Advogados preenchem um formulário estruturado, escolhendo setor e respondendo perguntas de satisfação
-Autenticação / controle	Login / Permissões	Backend gerencia quem pode acessar painel administrativo, quem pode enviar avaliação etc.
-Painel administrativo	Dashboard / Gráficos	Exibição de métricas (média de notas, número de avaliações, evolução ao longo do tempo)
-Filtragem / Segmentação	Filtros por setor, data, tipo	Permite cruzar avaliações por critérios específicos
-Exportação / Relatórios	Exportar dados	Gerar relatórios (CSV, Excel, PDF) para análises externas
-Gerenciamento de setores / perguntas	CRUD	Administradores podem criar / editar / remover setores, perguntas e escalas de resposta
-Interface responsiva	Compatível com mobile	As telas devem adaptar-se bem a dispositivos de diferentes tamanhos
-3. Arquitetura & Tecnologias Utilizadas (exemplo)
+Frontend: React, Vue,  Angular com TypeScript/JavaScript
 
-Ajuste conforme o que realmente está usado no projeto
+Backend/API: Node.js com Express
 
-Frontend: React, Vue, Angular (ou framework escolhido) + TypeScript / JavaScript
+Banco de Dados: PostgreSQL (Supabase)
 
-Backend / API: Node.js + Express / Nest.js, ou outro framework de sua escolha
+Autenticação/Autorização: JWT e middlewares de controle de permissão
 
-Banco de Dados: PostgreSQL / MySQL / outro relacional
+Bibliotecas Auxiliares: Chart.js, D3 para gráficos, bibliotecas de formulários e utilitários de validação
 
-Autenticação / Autorização: JWT, middleware de controle de permissões
+Segurança/Boas Práticas: Validação e sanitização de entradas, controle de CORS, uso de variáveis de ambiente
 
-Bibliotecas auxiliares: Gráficos (Chart.js, D3, etc.), bibliotecas de formulários, utilitários de validação
+🚀 Como Começar
+Siga os passos abaixo para executar o projeto em seu ambiente local.
 
-Deploy / Infraestrutura: Docker, servidor VPS / nuvem, CI/CD
-
-Testes: Testes unitários, testes de integração (opcional)
-
-Segurança / boas práticas: Validação de entrada, sanitização, controle de CORS, uso de variáveis de ambiente
-
-4. Estrutura do Projeto (Exemplo de Pastas)
-
-Uma sugestão de organização:
-
-/projeto-completo
-│
-├── backend
-│   ├── src
-│   │   ├── controllers
-│   │   ├── models / entities
-│   │   ├── services
-│   │   ├── routes
-│   │   └── middlewares
-│   ├── migrations
-│   ├── config
-│   └── index.ts (ou server.js)
-│
-├── frontend
-│   ├── src
-│   │   ├── components
-│   │   ├── pages
-│   │   ├── services / api
-│   │   ├── assets
-│   │   └── styles
-│   └── public
-│
-├── scripts (scripts de automação, seeders, etc.)
-├── .env.example
-├── README.md
-└── package.json (frontend e backend ou mono‐repo)
-
-5. Instalação & Configuração
 Pré-requisitos
+Node.js ([versão])
 
-Node.js (versão mínima recomendada, ex: 16+)
+npm ou yarn
 
-NPM ou Yarn
+Docker (opcional)
 
-Banco de dados instalado (ex: PostgreSQL)
+Instalação
+Clone o repositório:
 
-Git
-
-Passos para rodar localmente
-
-Clone o repositório
+Bash
 
 git clone https://github.com/andrelima-dev/atende-oab.git
-cd atende-oab/projeto-avaliacao-oab/projeto-completo
+Navegue até o diretório do projeto:
 
+Bash
 
-Configurar variáveis de ambiente
+cd atende-oab
+Instale as dependências:
 
-Copie o arquivo de exemplo:
+Bash
 
-cp .env.example .env
-
-
-Edite .env com os parâmetros reais (host, porta, usuário, senha, secret, etc.).
-
-Instalar dependências (backend e frontend)
-
-No backend:
-
-cd backend
 npm install
+# ou
+yarn install
+Configure as variáveis de ambiente. Renomeie o arquivo .env.example para .env e preencha com as suas informações.
 
+Inicie o servidor de desenvolvimento:
 
-No frontend:
-
-cd ../frontend
-npm install
-
-
-Rodar migrações / seeds (caso existam)
-
-No backend:
-
-npm run migrate
-npm run seed   # opcional, se houver dados iniciais
-
-
-Iniciar servidores
-
-Backend:
+Bash
 
 npm run dev
+# ou
+yarn dev
+🤝 Como Contribuir
+Contribuições são o que tornam a comunidade de código aberto um lugar incrível para aprender, inspirar e criar. Qualquer contribuição que você fizer será muito apreciada.
 
+Faça um Fork do projeto
 
-Frontend:
+Crie uma Branch para sua feature (git checkout -b feature/AmazingFeature)
 
-npm run dev
+Faça o Commit de suas mudanças (git commit -m 'Add some AmazingFeature')
 
+Faça o Push para a Branch (git push origin feature/AmazingFeature)
 
-Acessar via navegador
+Abra um Pull Request
 
-Vá para http://localhost:3000 (ou porta configurada) para ver a aplicação em funcionamento.
+📜 Licença
+Distribuído sob a licença MIT. Veja LICENSE para mais informações.
+
+📫 Contato
+André Lima - andrelimadev0@gmail.com - https://www.linkedin.com/in/andr%C3%A9-lima-7822042a5/
+
+Link do Projeto: https://github.com/andrelima-dev/atende-oab
