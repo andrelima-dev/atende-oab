@@ -1,179 +1,147 @@
-Atende OAB
+Projeto Avaliação OAB – Atende OAB (versão completa)
 
 
-Atende OAB é um sistema web criado para a Ordem dos Advogados do Brasil — Seccional Maranhão (OAB/MA), com o propósito de coletar feedback estruturado dos advogados sobre os serviços e atendimentos oferecidos por setores internos (Tesouraria, TI, TED, entre outros). 
-GitHub
+Uma plataforma para coletar, gerenciar e analisar avaliações de atendimento em setores da OAB/MA, com interfaces para advogados e painel administrativo.
 
-Índice
+1. Visão Geral
 
-Visão Geral
+O Projeto Avaliação OAB — parte do sistema Atende OAB — tem por objetivo central permitir que advogados classifiquem serviços e setores (Tesouraria, TI, TED, etc.) por meio de questionários, e que gestores internos possam visualizar estatísticas, relatórios e dados analíticos dessas avaliações.
 
-Funcionalidades
+Ele busca:
 
-Arquitetura e Tecnologias
+Dar voz aos usuários (advogados) para apontar melhorias
 
-Instalação
+Automatizar a coleta de dados de satisfação
 
-Configuração
+Prover dashboards úteis para tomada de decisão
 
-Como usar / fluxo de uso
+Promover transparência e monitoramento dentro da instituição
 
-Contribuição
+2. Recursos Principais
 
-Roadmap / Próximos passos
+Aqui estão os módulos/funcionalidades esperadas (ou já implementadas):
 
-Licença
+Módulo / Área	Funcionalidade	Descrição
+Avaliação pública	Formulário de avaliação	Advogados preenchem um formulário estruturado, escolhendo setor e respondendo perguntas de satisfação
+Autenticação / controle	Login / Permissões	Backend gerencia quem pode acessar painel administrativo, quem pode enviar avaliação etc.
+Painel administrativo	Dashboard / Gráficos	Exibição de métricas (média de notas, número de avaliações, evolução ao longo do tempo)
+Filtragem / Segmentação	Filtros por setor, data, tipo	Permite cruzar avaliações por critérios específicos
+Exportação / Relatórios	Exportar dados	Gerar relatórios (CSV, Excel, PDF) para análises externas
+Gerenciamento de setores / perguntas	CRUD	Administradores podem criar / editar / remover setores, perguntas e escalas de resposta
+Interface responsiva	Compatível com mobile	As telas devem adaptar-se bem a dispositivos de diferentes tamanhos
+3. Arquitetura & Tecnologias Utilizadas (exemplo)
 
-Créditos / Agradecimentos
+Ajuste conforme o que realmente está usado no projeto
 
-Visão Geral
+Frontend: React, Vue, Angular (ou framework escolhido) + TypeScript / JavaScript
 
-O Atende OAB visa tornar mais transparente e eficiente o processo de avaliação interna de serviços oferecidos pela OAB/MA, dando voz aos advogados para que possam manifestar sua opinião de forma estruturada. A plataforma permite:
+Backend / API: Node.js + Express / Nest.js, ou outro framework de sua escolha
 
-Enviar feedback para diferentes setores da OAB/MA
+Banco de Dados: PostgreSQL / MySQL / outro relacional
 
-Organizar e categorizar avaliações por tipo de serviço
+Autenticação / Autorização: JWT, middleware de controle de permissões
 
-Gerar relatórios com satisfação, métricas e índices
+Bibliotecas auxiliares: Gráficos (Chart.js, D3, etc.), bibliotecas de formulários, utilitários de validação
 
-Permitir que gestores vejam estatísticas e análises
+Deploy / Infraestrutura: Docker, servidor VPS / nuvem, CI/CD
 
-Esse feedback ajuda a identificar pontos de melhoria operacionais e promover uma cultura de qualidade no atendimento aos profissionais.
+Testes: Testes unitários, testes de integração (opcional)
 
-Funcionalidades
+Segurança / boas práticas: Validação de entrada, sanitização, controle de CORS, uso de variáveis de ambiente
 
-Aqui estão algumas das funcionalidades previstas ou já implementadas:
+4. Estrutura do Projeto (Exemplo de Pastas)
 
-Formulários de avaliação para advogados
+Uma sugestão de organização:
 
-Interface de administração para gerenciamento de setores e questionários
+/projeto-completo
+│
+├── backend
+│   ├── src
+│   │   ├── controllers
+│   │   ├── models / entities
+│   │   ├── services
+│   │   ├── routes
+│   │   └── middlewares
+│   ├── migrations
+│   ├── config
+│   └── index.ts (ou server.js)
+│
+├── frontend
+│   ├── src
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── services / api
+│   │   ├── assets
+│   │   └── styles
+│   └── public
+│
+├── scripts (scripts de automação, seeders, etc.)
+├── .env.example
+├── README.md
+└── package.json (frontend e backend ou mono‐repo)
 
-Estatísticas e dashboards para análise de feedback
-
-Filtragem e categorização por setor, data, tipo de atendimento
-
-Controle de permissões (quem pode acessar relatórios, etc.)
-
-Responsividade — uso em dispositivos móveis e desktop
-
-Arquitetura & Tecnologias
-
-O projeto está estruturado utilizando as seguintes tecnologias:
-
-Camada / Componente	Tecnologia / Ferramenta	Observações
-Frontend	TypeScript, CSS, HTML, (framework / biblioteca usada)	Desenvolvimento de interfaces reativas
-Backend / API	(indique framework ou linguagem usada)	Lógica de negócio e persistência de dados
-Banco de dados	(ex: PostgreSQL, MySQL, MongoDB)	Armazenamento de feedback, usuários, setores etc.
-Autenticação / Autorização	(ex: JWT, OAuth, session)	Controle de acesso à parte administrativa
-Infraestrutura / Deploy	(ex: Docker, Heroku, AWS, Netlify)	Estratégia de hospedagem / deploy
-Testes	(unitários, integração)	Garantia de qualidade do software
-Outras bibliotecas / utilitários	(ex: bibliotecas de gráficos, formulários, validação)	Para suporte à interface e lógica
-
-Nota: adapte esta tabela conforme a real estrutura do seu projeto (se você usa React, Vue, Node.js, Django, etc.).
-
-Instalação
-
-Estas instruções permitirão que você configure uma cópia local do projeto para desenvolvimento e testes.
-
+5. Instalação & Configuração
 Pré-requisitos
 
-Node.js (versão mínima recomendada)
+Node.js (versão mínima recomendada, ex: 16+)
 
 NPM ou Yarn
 
-Banco de dados (ex: PostgreSQL / MySQL / outro)
+Banco de dados instalado (ex: PostgreSQL)
 
 Git
 
-Passos
-# Clone o repositório
+Passos para rodar localmente
+
+Clone o repositório
+
 git clone https://github.com/andrelima-dev/atende-oab.git
-cd atende-oab
+cd atende-oab/projeto-avaliacao-oab/projeto-completo
 
-# Instale dependências
-npm install
-# ou
-yarn install
 
-# Crie arquivo de variáveis de ambiente
+Configurar variáveis de ambiente
+
+Copie o arquivo de exemplo:
+
 cp .env.example .env
-# e ajuste com suas credenciais de banco, chaves, URLs etc.
 
-# Executar migrações / setup do banco (se houver)
+
+Edite .env com os parâmetros reais (host, porta, usuário, senha, secret, etc.).
+
+Instalar dependências (backend e frontend)
+
+No backend:
+
+cd backend
+npm install
+
+
+No frontend:
+
+cd ../frontend
+npm install
+
+
+Rodar migrações / seeds (caso existam)
+
+No backend:
+
 npm run migrate
-# ou comando equivalente
+npm run seed   # opcional, se houver dados iniciais
 
-# Iniciar aplicação em modo de desenvolvimento
+
+Iniciar servidores
+
+Backend:
+
 npm run dev
 
 
-Depois disso, abra no navegador o endereço (ex: http://localhost:3000) para ver a aplicação rodando localmente.
+Frontend:
 
-Configuração / Variáveis de ambiente
+npm run dev
 
-No arquivo .env você deve definir variáveis como:
 
-DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME — dados do banco
+Acessar via navegador
 
-JWT_SECRET ou chave para autenticação
-
-PORT — porta em que o servidor vai escutar
-
-Outras variáveis específicas do projeto (endpoints externos, chaves de API, domínio, etc.)
-
-Assegure-se de não versionar o arquivo .env com dados sensíveis.
-
-Como usar / Fluxo de uso
-
-Usuário advogado acessa formulário para avaliar um serviço/setor
-
-Seleciona setor (Tesouraria, TI, TED etc.)
-
-Preenche perguntas / escalas de satisfação
-
-Submete avaliação
-
-Administrador / gestor acessa painel de controle
-
-Visualiza métricas, gráficos, filtragens e exporta relatórios
-
-Você pode incluir capturas de tela (screenshots) ou GIFs para ilustrar essas etapas.
-
-Contribuição
-
-Solicitações de issues e pull requests são bem-vindas! Aqui estão algumas diretrizes:
-
-Faça um fork do repositório
-
-Crie uma branch para sua feature ou correção (git checkout -b feature/nova-funcionalidade)
-
-Faça commits claros e bem documentados
-
-Envie pull request com descrição das mudanças
-
-Antes de contribuir, consulte Issues abertas para evitar duplicação de esforços.
-
-Roadmap / Próximos passos
-
-Aqui estão algumas ideias para evoluções futuras:
-
-Integração com sistemas internos da OAB/MA
-
-Envio de notificações (e-mail, SMS) para advogados que avaliarem
-
-Dashboard mais interativo com gráficos dinâmicos
-
-Exportação de relatórios em PDF / Excel
-
-Sistema de autenticação via conta institucional da OAB
-
-Interface multilíngue / acessibilidade
-
-Versão mobile (app ou PWA)
-
-Você pode adicionar uma seção Milestones ou Releases planejadas.
-
-Licença
-
-Este projeto está licenciado sob a Licença MIT — veja o arquivo LICENSE
- para mais detalhes.
+Vá para http://localhost:3000 (ou porta configurada) para ver a aplicação em funcionamento.
