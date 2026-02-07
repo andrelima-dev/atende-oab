@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../integrations/supabase/client";
+import { api } from "../../lib/apiClient";
 import { DashboardHeader } from "@/dashboard/components/dashboard/DashboardHeader";
 import { MetricCard } from "@/dashboard/components/dashboard/MetricCard";
 import { SectorChart } from "@/dashboard/components/dashboard/SectorChart";
 import { RecentEvaluations } from "@/dashboard/components/dashboard/RecentEvaluations";
 import { FilterPanel } from "@/dashboard/components/dashboard/FilterPanel";
+import { SectorAnalysis } from "@/dashboard/components/dashboard/SectorAnalysis";
+import { calculateSectorStats } from "@/dashboard/lib/exportUtils";
 
 interface Avaliacao {
   id: number;
@@ -42,6 +44,7 @@ interface SectorData {
 const Index = () => {
   const [selectedSector, setSelectedSector] = useState("all");
   const [selectedPeriod, setSelectedPeriod] = useState("30d");
+  const [showAnalysis, setShowAnalysis] = useState(false);
 
   const [avaliacoes, setAvaliacaos] = useState<Avaliacao[]>([]);
   const [loading, setLoading] = useState(true);
@@ -76,16 +79,13 @@ const sectorKeys: Record<string, string> = {
   useEffect(() => {
     const fetchAvaliacaos = async () => {
       setLoading(true);
-      const { data, error } = await supabase
-        .from("avaliacoes_oab")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        setError(error.message);
-        console.error("Erro ao buscar avaliações:", error);
-      } else {
+      try {
+        const data = await api.getAll();
         setAvaliacaos(data || []);
+        setError(null);
+      } catch (error) {
+        setError(error instanceof Error ? error.message : 'Erro ao buscar avaliações');
+        console.error("Erro ao buscar avaliações:", error);
       }
       setLoading(false);
     };
@@ -171,6 +171,23 @@ const sectorKeys: Record<string, string> = {
     });
   };
 
+  const convertToAnalysisFormat = (data: Avaliacao[]) => {
+    return data.map((item) => ({
+      id: item.id.toString(),
+      nome_advogado: item.nome_advogado,
+      numero_ordem: item.numero_ordem,
+      processo: item.processo || "",
+      setor: item.setor,
+      nota_atendimento: item.nota_atendimento || 0,
+      nota_qualidade: item.nota_clareza || 0,
+      nota_pontualidade: item.nota_agilidade || 0,
+      nota_comunicacao: item.nota_cordialidade || 0,
+      nota_resultado: item.nota_eficiencia || 0,
+      comentario: item.comentario || "",
+      createdAt: item.data_criacao,
+    }));
+  };
+
   const formattedEvaluations = formatEvaluations(filteredEvaluations);
 
   const overallAverage =
@@ -192,14 +209,9 @@ const sectorKeys: Record<string, string> = {
 
   const totalEvaluations = filteredEvaluations.length;
 
-  const bestSector = filteredEvaluations.reduce(
-    (best, current) =>
-      (current.nota_eficiencia || 0) >
-      (best ? best.nota_eficiencia || 0 : 0)
-        ? current
-        : best,
-    filteredEvaluations[0]
-  );
+  // Corrige a lógica para usar a média geral por setor
+  const sectorStats = calculateSectorStats(convertToAnalysisFormat(filteredEvaluations));
+  const bestSector = sectorStats.length > 0 ? sectorStats[0] : null;
 
   const groupDataBySector = (data: Avaliacao[]): SectorData[] => {
     const sectorMap: { [key: string]: { sum: number; count: number } } = {};
@@ -256,8 +268,14 @@ const sectorKeys: Record<string, string> = {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 transition-colors duration-300">
+      {/* Efeito de fundo decorativo */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl -mt-48 transition-colors duration-300"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-200/20 dark:bg-indigo-600/10 rounded-full blur-3xl -mb-48 transition-colors duration-300"></div>
+      </div>
+
+      <div className="container mx-auto px-4 py-8 relative z-10">
         <DashboardHeader />
 
         <FilterPanel
@@ -266,15 +284,23 @@ const sectorKeys: Record<string, string> = {
           onSectorChange={setSelectedSector}
           onPeriodChange={setSelectedPeriod}
           onRefresh={handleRefresh}
+          avaliacoes={convertToAnalysisFormat(filteredEvaluations)}
+          showAnalysis={showAnalysis}
+          onToggleAnalysis={() => setShowAnalysis(!showAnalysis)}
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {showAnalysis && (
+          <div className="mb-10">
+            <SectorAnalysis avaliacoes={convertToAnalysisFormat(filteredEvaluations)} />
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           <MetricCard
             title="Média Geral"
             value={Number(overallAverage)}
             subtitle="Todas as avaliações"
             trend="up"
-            
             color="primary"
           />
           <MetricCard
@@ -282,7 +308,6 @@ const sectorKeys: Record<string, string> = {
             value={totalEvaluations}
             subtitle="Últimos 30 dias"
             trend="up"
-            
             color="secondary"
           />
           <MetricCard
@@ -297,12 +322,11 @@ const sectorKeys: Record<string, string> = {
             value={92.5}
             subtitle="Acima de 4 estrelas"
             trend="up"
-            
-            color="success"
+            color="warning"
           />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
           <SectorChart data={formattedSectorData} type="bar" />
           <SectorChart data={formattedSectorData} type="pie" />
         </div>

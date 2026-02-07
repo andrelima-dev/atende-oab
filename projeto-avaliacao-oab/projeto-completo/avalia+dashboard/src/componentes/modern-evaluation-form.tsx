@@ -172,18 +172,16 @@ export default function ModernEvaluationForm() {
     setMensagem({ tipo: "", texto: "" })
 
     const avaliacaoParaEnviar = {
-      nome,
-      oab,
+      nome_advogado: nome,
+      numero_ordem: oab,
       processo: numeroProcesso,
       setor: setorSelecionado,
-      comentario,
-      notas: {
-        suporte_tecnico: ratings.suporte,
-        clareza_resolucao: ratings.clareza,
-        agilidade_atendimento: ratings.agilidade,
-        cordialidade: ratings.cordialidade,
-        eficiencia: ratings.eficiencia,
-      },
+      nota_atendimento: ratings.suporte,
+      nota_clareza: ratings.clareza,
+      nota_agilidade: ratings.agilidade,
+      nota_cordialidade: ratings.cordialidade,
+      nota_eficiencia: ratings.eficiencia,
+      comentario: comentario,
     }
 
     try {

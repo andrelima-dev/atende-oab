@@ -1,0 +1,29 @@
+// Schema do Prisma para o banco de dados PostgreSQL
+// Este schema mapeia a tabela avaliacoes_oab do Supabase
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Avaliacao {
+  id                  Int       @id @default(autoincrement())
+  nome_advogado       String
+  numero_ordem        String
+  processo            String?
+  setor               String
+  nota_atendimento    Int?
+  nota_clareza        Int?
+  nota_agilidade      Int?
+  nota_cordialidade   Int?
+  nota_eficiencia     Int?
+  comentario          String?
+  created_at          DateTime? @default(now())
+  data_criacao        DateTime  @default(now())
+
+  @@map("avaliacoes_oab")
+}

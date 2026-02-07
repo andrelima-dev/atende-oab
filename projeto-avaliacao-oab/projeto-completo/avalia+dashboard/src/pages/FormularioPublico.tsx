@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabaseClient';
+import { api } from '../lib/apiClient';
 import SuccessScreen from '../componentes/success-screen';
 import ProgressIndicator from '../componentes/progress-indicator';
 import StarRating from '../componentes/star-rating';
@@ -88,14 +88,13 @@ export default function FormularioPublico() {
       ...ratings
     };
 
-    const { error } = await supabase.from('avaliacoes_oab').insert([avaliacaoParaEnviar]);
-
-    if (error) {
-      console.error("Erro ao enviar para o Supabase:", error);
+    try {
+      await api.create(avaliacaoParaEnviar);
+      window.location.href = window.location.pathname + '?status=success';
+    } catch (error) {
+      console.error("Erro ao enviar avaliação:", error);
       setMensagem({ tipo: "error", texto: "Ocorreu um erro ao salvar sua avaliação. Tente novamente." });
       setLoading(false);
-    } else {
-      window.location.href = window.location.pathname + '?status=success';
     }
   };
 
