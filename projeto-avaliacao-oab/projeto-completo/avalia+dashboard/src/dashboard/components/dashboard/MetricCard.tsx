@@ -4,7 +4,7 @@ import { TrendingUp, TrendingDown, Minus, Star, Users, BarChart3, CheckCircle2 }
 
 interface MetricCardProps {
   title: string;
-  value: number;
+  value?: number;
   subtitle: string;
   trend?: "up" | "down" | "stable";
   trendValue?: string;
@@ -93,9 +93,9 @@ export const MetricCard = ({
     }
   };
 
-  const formattedValue = Number.isInteger(value)
-    ? value
-    : value.toFixed(1);
+  const formattedValue = value !== undefined 
+    ? (Number.isInteger(value) ? value : value.toFixed(1))
+    : null;
 
   return (
     <Card className={`bg-gradient-to-br ${getCardGradient()} border shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 rounded-2xl overflow-hidden`}>
@@ -103,7 +103,7 @@ export const MetricCard = ({
         <div className="absolute top-0 right-0 w-40 h-40 bg-white dark:bg-slate-800 rounded-full blur-3xl -mr-20 -mt-20"></div>
       </div>
       
-      <CardHeader className="pb-2 relative">
+      <CardHeader className={formattedValue !== null ? "pb-2 relative" : "pb-0 relative"}>
         <div className="flex items-center justify-between">
           <CardTitle className="text-sm font-semibold text-slate-600 dark:text-slate-300">
             {title}
@@ -114,16 +114,24 @@ export const MetricCard = ({
         </div>
       </CardHeader>
       
-      <CardContent className="relative">
-        <div className="space-y-3">
+      <CardContent className={formattedValue !== null ? "relative" : "relative pt-2"}>
+        <div className={formattedValue !== null ? "space-y-3" : ""}>
           <div>
-            <div className={`text-4xl font-bold ${getValueColor()} tabular-nums`}>
-              {formattedValue}
-              {color === "warning" && <span className="text-2xl ml-1">⭐</span>}
-            </div>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 font-medium">
-              {subtitle}
-            </p>
+            {formattedValue !== null ? (
+              <>
+                <div className={`text-4xl font-bold ${getValueColor()} tabular-nums`}>
+                  {formattedValue}
+                  {color === "warning" && <span className="text-2xl ml-1">⭐</span>}
+                </div>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 font-medium">
+                  {subtitle}
+                </p>
+              </>
+            ) : (
+              <div className={`text-2xl font-bold ${getValueColor()}`}>
+                {subtitle}
+              </div>
+            )}
           </div>
           
           {trendValue && (

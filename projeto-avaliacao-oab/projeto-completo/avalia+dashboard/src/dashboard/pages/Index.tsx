@@ -295,7 +295,7 @@ const sectorKeys: Record<string, string> = {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
           <MetricCard
             title="Média Geral"
             value={Number(overallAverage)}
@@ -309,20 +309,6 @@ const sectorKeys: Record<string, string> = {
             subtitle="Últimos 30 dias"
             trend="up"
             color="secondary"
-          />
-          <MetricCard
-            title="Melhor Setor"
-            value={bestSector ? bestSector.nota_eficiencia || 0 : 0}
-            subtitle={bestSector ? bestSector.setor : ""}
-            trend="stable"
-            color="success"
-          />
-          <MetricCard
-            title="Taxa de Satisfação"
-            value={92.5}
-            subtitle="Acima de 4 estrelas"
-            trend="up"
-            color="warning"
           />
         </div>
 

@@ -1,5 +1,5 @@
 // Schema do Prisma para o banco de dados PostgreSQL
-// Este schema mapeia a tabela avaliacoes_oab do Supabase
+// Este schema mapeia as tabelas do sistema de avaliações OAB
 
 generator client {
   provider = "prisma-client-js"
@@ -10,20 +10,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Tabela de setores para evitar duplicidade
+model Setor {
+  id         Int         @id @default(autoincrement())
+  nome       String      @unique // Nome do setor
+  avaliacoes Avaliacao[]
+
+  @@map("setores")
+}
+
+// Tabela de avaliações
 model Avaliacao {
-  id                  Int       @id @default(autoincrement())
-  nome_advogado       String
-  numero_ordem        String
-  processo            String?
-  setor               String
-  nota_atendimento    Int?
-  nota_clareza        Int?
-  nota_agilidade      Int?
-  nota_cordialidade   Int?
-  nota_eficiencia     Int?
-  comentario          String?
-  created_at          DateTime? @default(now())
-  data_criacao        DateTime  @default(now())
+  id                Int      @id @default(autoincrement())
+  nome_advogado     String   // Nome do advogado
+  numero_ordem      String   // Número da OAB
+  processo          String?  // Número do processo (opcional)
+  setor_id          Int      // FK para setor
+  setor             Setor    @relation(fields: [setor_id], references: [id])
+  nota_atendimento  Int      @default(0) @db.SmallInt // Nota de 1 a 5
+  nota_clareza      Int      @default(0) @db.SmallInt // Nota de 1 a 5
+  nota_agilidade    Int      @default(0) @db.SmallInt // Nota de 1 a 5
+  nota_cordialidade Int      @default(0) @db.SmallInt // Nota de 1 a 5
+  nota_eficiencia   Int      @default(0) @db.SmallInt // Nota de 1 a 5
+  comentario        String?  // Comentário opcional
+  created_at        DateTime @default(now())
+  data_criacao      DateTime @default(now())
 
   @@map("avaliacoes_oab")
 }
