@@ -99,7 +99,48 @@ Este é o guia central para toda a documentação do sistema de autenticação i
 
 ---
 
-### 5. 🎨 [RESUMO-VISUAL.md](./RESUMO-VISUAL.md)
+### 5. 🚀 [GUIA-DEPLOY.md](./GUIA-DEPLOY.md)
+**Guia completo de deploy em produção (com configurações reais)**
+
+**Conteúdo:**
+- ✅ Configurações reais do seu projeto
+- Deploy do frontend (Vercel)
+- Deploy do backend (Railway/Render)
+- Configuração de banco de dados em produção
+- Variáveis de ambiente
+- Criar usuário admin em produção
+- Migração de dados local para produção
+
+**Para quem:**
+- ✅ DevOps
+- ✅ Desenvolvedores
+- ✅ Administradores de sistema
+
+**⏱️ Leitura: 20 minutos**
+
+---
+
+### 6. ✅ [CHECKLIST-DEPLOY.md](./CHECKLIST-DEPLOY.md)
+**Checklist passo a passo para deploy**
+
+**Conteúdo:**
+- Lista de verificação para cada fase
+- Ordem correta de deploy
+- Comandos úteis
+- Testes de validação
+- Troubleshooting rápido
+- Espaços para anotar URLs e configurações
+
+**Para quem:**
+- ✅ Qualquer pessoa fazendo o deploy
+- ✅ Primeira vez fazendo deploy
+- ✅ Checklist de validação
+
+**⏱️ Leitura: 15 minutos (+ tempo de execução)**
+
+---
+
+### 7. 🎨 [RESUMO-VISUAL.md](./RESUMO-VISUAL.md)
 **Overview visual da arquitetura e design**
 
 **Conteúdo:**
@@ -119,7 +160,7 @@ Este é o guia central para toda a documentação do sistema de autenticação i
 
 ---
 
-### 6. 🎨 [DESIGN-VISUAL.md](./DESIGN-VISUAL.md)
+### 8. 🎨 [DESIGN-VISUAL.md](./DESIGN-VISUAL.md)
 **Especificações de design e UI/UX**
 
 **Conteúdo:**
@@ -157,6 +198,11 @@ Administrador/Gestor? → LEIA-ME-PRIMEIRO.md → GUIA-LOGIN.md
          └→ Depois: COMO-LIBERAR-USUARIOS.md
 
 Novo na Equipe? → RESUMO-VISUAL.md → LEIA-ME-PRIMEIRO.md
+
+Vai fazer Deploy? → GUIA-DEPLOY.md + CHECKLIST-DEPLOY.md
+         │
+         └→ Siga o checklist passo a passo!
+```
          │
          └→ Depois: Todos os outros
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api } from "../../lib/apiClient";
+import { api, Avaliacao as AvaliacaoType } from "../../lib/apiClient";
 import { DashboardHeader } from "@/dashboard/components/dashboard/DashboardHeader";
 import { MetricCard } from "@/dashboard/components/dashboard/MetricCard";
 import { SectorChart } from "@/dashboard/components/dashboard/SectorChart";
@@ -12,16 +12,16 @@ interface Avaliacao {
   id: number;
   nome_advogado: string;
   setor: string;
-  nota_agilidade: number | null;
-  nota_atendimento: number | null;
-  nota_clareza: number | null;
-  nota_cordialidade: number | null;
-  nota_eficiencia: number | null;
-  comentario: string | null;
-  created_at: string | null;
+  nota_agilidade?: number | null;
+  nota_atendimento?: number | null;
+  nota_clareza?: number | null;
+  nota_cordialidade?: number | null;
+  nota_eficiencia?: number | null;
+  comentario?: string | null;
+  created_at?: string | null;
   data_criacao: string;
   numero_ordem: string;
-  processo: string | null;
+  processo?: string | null;
 }
 
 interface Evaluation {

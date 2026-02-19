@@ -5,11 +5,11 @@ export interface AvaliacaoInput {
   numero_ordem: string;
   processo?: string;
   setor: string;
-  nota_atendimento?: number;
-  nota_clareza?: number;
-  nota_agilidade?: number;
-  nota_cordialidade?: number;
-  nota_eficiencia?: number;
+  nota_atendimento?: number | null;
+  nota_clareza?: number | null;
+  nota_agilidade?: number | null;
+  nota_cordialidade?: number | null;
+  nota_eficiencia?: number | null;
   comentario?: string;
 }
 
