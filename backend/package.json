@@ -11,7 +11,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "criar-usuario": "ts-node -r dotenv/config src/scripts/criar-usuario.ts",
-    "seed-admin": "ts-node -r dotenv/config src/scripts/seed-admin.ts"
+    "seed-admin": "ts-node -r dotenv/config src/scripts/seed-admin.ts",
+    "renomear-setores-x": "ts-node -r dotenv/config src/scripts/renomear-setores-x.ts"
   },
   "keywords": [
     "express",
