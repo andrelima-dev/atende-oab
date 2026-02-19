@@ -14,7 +14,14 @@ const SendIcon = ({ className }: { className?: string }) => ( <svg className={cl
 const CheckCircleIcon = ({ className }: { className?: string }) => ( <svg className={className} fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" /></svg> )
 const AlertIcon = ({ className }: { className?: string }) => ( <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> )
 
-const setores = ["X", "Tecnologia da Informação"];
+// Setores disponíveis para avaliação
+// ⚠️ Edite os nomes abaixo quando os setores forem definidos
+const setores = [
+  "Setor 1",              // ← Renomeie para o nome real do setor
+  "Setor 2",              // ← Renomeie para o nome real do setor
+  "Setor 3",              // ← Renomeie para o nome real do setor
+  "Tecnologia da Informação"
+];
 const avaliacaoCategories = [
   { key: "nota_atendimento", label: "Suporte prestado", question: "O setor atende às demandas de forma satisfatória?" },
   { key: "nota_clareza", label: "Clareza na resolução do problema", question: "As respostas foram claras, completas e compreensíveis?" },
