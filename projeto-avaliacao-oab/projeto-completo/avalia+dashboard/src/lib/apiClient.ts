@@ -19,6 +19,11 @@ export interface Avaliacao extends AvaliacaoInput {
   data_criacao: string;
 }
 
+export interface Setor {
+  id: number;
+  nome: string;
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   data?: T;
@@ -68,6 +73,22 @@ class ApiClient {
       return result.data || [];
     } catch (error) {
       console.error('Erro ao buscar avaliações:', error);
+      throw error;
+    }
+  }
+
+  async getSetores(): Promise<Setor[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/avaliacoes/setores`);
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || result.message || 'Erro ao buscar setores');
+      }
+
+      return result.data || [];
+    } catch (error) {
+      console.error('Erro ao buscar setores:', error);
       throw error;
     }
   }

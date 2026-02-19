@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Button } from "../ui/button";
 import { Filter, RefreshCw, Sliders, Download, BarChart3 } from "lucide-react";
 import { exportToPDF } from "../../lib/exportUtils";
+import { api, Setor } from "../../../lib/apiClient";
 
 interface FilterPanelProps {
   selectedSector: string;
@@ -15,14 +16,6 @@ interface FilterPanelProps {
   showAnalysis?: boolean;
   onToggleAnalysis?: () => void;
 }
-
-const sectors = [
-  { value: "all", label: "Todos os Setores" },
-  { value: "financeiro", label: "Financeiro/Tesouraria" },
-  { value: "ti", label: "Tecnologia da Informação" },
-  { value: "ted", label: "TED" },
-  { value: "esa", label: "ESA/MA" },
-];
 
 const periods = [
   { value: "7d", label: "Últimos 7 dias" },
@@ -44,6 +37,19 @@ export const FilterPanel = ({
 }: FilterPanelProps) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const [setores, setSetores] = useState<Setor[]>([]);
+
+  useEffect(() => {
+    const fetchSetores = async () => {
+      try {
+        const data = await api.getSetores();
+        setSetores(data);
+      } catch (error) {
+        console.error('Erro ao carregar setores:', error);
+      }
+    };
+    fetchSetores();
+  }, []);
 
   const handleRefreshClick = () => {
     setIsRefreshing(true);
@@ -86,9 +92,10 @@ export const FilterPanel = ({
                 <SelectValue placeholder="Selecione um setor" />
               </SelectTrigger>
               <SelectContent>
-                {sectors.map((sector) => (
-                  <SelectItem key={sector.value} value={sector.value}>
-                    {sector.label}
+                <SelectItem value="all">Todos os Setores</SelectItem>
+                {setores.map((setor) => (
+                  <SelectItem key={setor.id} value={setor.nome}>
+                    {setor.nome}
                   </SelectItem>
                 ))}
               </SelectContent>

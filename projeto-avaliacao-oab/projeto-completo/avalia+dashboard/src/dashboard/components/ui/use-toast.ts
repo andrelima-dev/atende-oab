@@ -1,9 +1,7 @@
 
-export function useToast() {
-  console.log("Usei o toast!");
+  // Função de toast sem log
 }
 
-export const toast = {
-  show: () => console.log("Mostrei o toast!")
+  show: () => {}
 };
 

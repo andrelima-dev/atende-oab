@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import avaliacoesRoutes from './routes/avaliacoes';
+import authRoutes from './routes/auth';
 import { errorHandler } from './middleware/errorHandler';
 
 dotenv.config();
@@ -33,6 +34,7 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'API Atende OAB está funcionando!' });
 });
 
+app.use('/api/auth', authRoutes);
 app.use('/api/avaliacoes', avaliacoesRoutes);
 
 // Middleware de erro (deve ser o último)

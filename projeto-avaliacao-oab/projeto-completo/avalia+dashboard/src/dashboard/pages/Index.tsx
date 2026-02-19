@@ -50,66 +50,29 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const normalizeText = (text: string): string =>
-    text
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .trim();
-
-const sectorKeys: Record<string, string> = {
-  "financeiro / tesouraria": "financeiro", 
-  
-  "financeiro": "financeiro",
-  "financeiro/tesouraria": "financeiro",
-  "tesouraria": "financeiro",
-
-  "tecnologia da informacao": "ti",
-  "ti": "ti",
-  "ted": "ted",
-  "esa": "esa",
-  "esa/ma": "esa",
-};
-
-  const getSectorKey = (setor: string): string => {
-    const norm = normalizeText(setor);
-    return sectorKeys[norm] ?? norm;
+  // Função para recarregar avaliações
+  const handleRefresh = async () => {
+    setLoading(true);
+    try {
+      const data = await api.getAll();
+      setAvaliacaos(data || []);
+      setError(null);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Erro ao buscar avaliações');
+      console.error("Erro ao buscar avaliações:", error);
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
-    const fetchAvaliacaos = async () => {
-      setLoading(true);
-      try {
-        const data = await api.getAll();
-        setAvaliacaos(data || []);
-        setError(null);
-      } catch (error) {
-        setError(error instanceof Error ? error.message : 'Erro ao buscar avaliações');
-        console.error("Erro ao buscar avaliações:", error);
-      }
-      setLoading(false);
-    };
-
-    fetchAvaliacaos();
+    handleRefresh();
   }, []);
 
   const filteredEvaluations = avaliacoes.filter((item) => {
-    const itemSectorKey = getSectorKey(item.setor);
-
-    if (selectedSector === "financeiro") {
-      console.log("--- Checando avaliação para o setor Financeiro ---");
-      console.log("Filtro selecionado (selectedSector):", selectedSector);
-      console.log("Setor do item no banco (item.setor):", `'${item.setor}'`);
-      console.log("Setor do item após normalização (itemSectorKey):", `'${itemSectorKey}'`);
-      console.log(
-        `A comparação será: '${itemSectorKey}' === '${selectedSector}'? ->`,
-        itemSectorKey === selectedSector
-      );
-      console.log("-------------------------------------------------");
-    }
+    const itemSector = (item.setor as string) || 'Não especificado';
 
     const isSectorMatch =
-      selectedSector === "all" || itemSectorKey === selectedSector;
+      selectedSector === "all" || itemSector === selectedSector;
 
     const itemDate = new Date(item.data_criacao);
     const today = new Date();
@@ -193,19 +156,23 @@ const sectorKeys: Record<string, string> = {
   const overallAverage =
     filteredEvaluations.length > 0
       ? (
-          filteredEvaluations.reduce(
-            (sum, item) =>
-              sum +
-              ((item.nota_agilidade || 0) +
-                (item.nota_atendimento || 0) +
-                (item.nota_clareza || 0) +
-                (item.nota_cordialidade || 0) +
-                (item.nota_eficiencia || 0)) /
-                5,
-            0
-          ) / filteredEvaluations.length
+          filteredEvaluations.reduce((sum, item) => {
+            const notas = [
+              item.nota_agilidade,
+              item.nota_atendimento,
+              item.nota_clareza,
+              item.nota_cordialidade,
+              item.nota_eficiencia,
+            ].filter((nota): nota is number => nota !== null && nota !== undefined);
+            
+            const media = notas.length > 0 
+              ? notas.reduce((s, n) => s + n, 0) / notas.length 
+              : 0;
+            
+            return sum + media;
+          }, 0) / filteredEvaluations.length
         ).toFixed(1)
-      : "0";
+      : "0.0";
 
   const totalEvaluations = filteredEvaluations.length;
 
@@ -217,36 +184,39 @@ const sectorKeys: Record<string, string> = {
     const sectorMap: { [key: string]: { sum: number; count: number } } = {};
 
     data.forEach((avaliacao) => {
-      const setorKey = getSectorKey(avaliacao.setor);
-      const average =
-        ((avaliacao.nota_agilidade || 0) +
-          (avaliacao.nota_atendimento || 0) +
-          (avaliacao.nota_clareza || 0) +
-          (avaliacao.nota_cordialidade || 0) +
-          (avaliacao.nota_eficiencia || 0)) /
-        5;
+      const setorNome = (avaliacao.setor as string) || 'Não especificado';
+      
+      // Calcula a média apenas das notas que existem
+      const notas = [
+        avaliacao.nota_agilidade,
+        avaliacao.nota_atendimento,
+        avaliacao.nota_clareza,
+        avaliacao.nota_cordialidade,
+        avaliacao.nota_eficiencia,
+      ].filter((nota): nota is number => nota !== null && nota !== undefined);
+      
+      const average = notas.length > 0 
+        ? notas.reduce((s, n) => s + n, 0) / notas.length 
+        : 0;
 
-      if (!sectorMap[setorKey]) {
-        sectorMap[setorKey] = { sum: 0, count: 0 };
+      if (!sectorMap[setorNome]) {
+        sectorMap[setorNome] = { sum: 0, count: 0 };
       }
-      sectorMap[setorKey].sum += average;
-      sectorMap[setorKey].count += 1;
+      sectorMap[setorNome].sum += average;
+      sectorMap[setorNome].count += 1;
     });
 
-    const COLORS = ["#36A2EB", "#FF6384", "#FFCE56", "#4BC0C0"];
+    const COLORS = ["#36A2EB", "#FF6384", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"];
 
-    return Object.keys(sectorMap).map((setor, index) => ({
-      name: setor,
-      average: sectorMap[setor].sum / sectorMap[setor].count,
-      evaluations: sectorMap[setor].count,
-      color: COLORS[index % COLORS.length],
-    }));
-  };
-
-  const formattedSectorData = groupDataBySector(filteredEvaluations);
-
-  const handleRefresh = () => {
-    console.log("Refreshing data...");
+    return Object.keys(sectorMap)
+      .filter((setor) => sectorMap[setor].count > 0)
+      .map((setor, index) => ({
+        name: setor,
+        average: Number((sectorMap[setor].sum / sectorMap[setor].count).toFixed(2)),
+        evaluations: sectorMap[setor].count,
+        color: COLORS[index % COLORS.length],
+      }))
+      .sort((a, b) => b.average - a.average);
   };
 
   if (loading) {
@@ -266,6 +236,9 @@ const sectorKeys: Record<string, string> = {
       </div>
     );
   }
+
+  // Corrige: define os dados formatados para os gráficos
+  const formattedSectorData = groupDataBySector(filteredEvaluations);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 transition-colors duration-300">

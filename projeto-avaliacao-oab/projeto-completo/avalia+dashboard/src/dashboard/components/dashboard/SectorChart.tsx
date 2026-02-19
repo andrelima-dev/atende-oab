@@ -1,7 +1,19 @@
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
-import { Skeleton } from "../ui/skeleton";
-import { Activity, PieChart as PieChartIcon } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/dashboard/components/ui/card";
+import { Skeleton } from "@/dashboard/components/ui/skeleton";
+import { PieChartIcon, Activity } from "lucide-react";
+import {
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Bar
+} from "recharts";
 
 interface SectorData {
   name: string;
@@ -16,14 +28,9 @@ interface SectorChartProps {
   isLoading?: boolean;
 }
 
-// Paleta profissional de cores
-const PROFESSIONAL_COLORS = ['#3B82F6', '#8B5CF6', '#EC4899', '#F59E0B', '#10B981', '#06B6D4']; 
+const PROFESSIONAL_COLORS = ['#3B82F6', '#8B5CF6', '#EC4899', '#F59E0B', '#10B981', '#06B6D4'];
 
-export const SectorChart = ({
-  data,
-  type = "bar",
-  isLoading = false
-}: SectorChartProps) => {
+export const SectorChart = ({ data, type = "bar", isLoading = false }: SectorChartProps) => {
   if (isLoading) {
     return (
       <Card className="shadow-xl rounded-2xl border-0">
@@ -107,12 +114,7 @@ export const SectorChart = ({
         <ResponsiveContainer width="100%" height={350}>
           <BarChart
             data={data}
-            margin={{
-              top: 20,
-              right: 30,
-              left: 20,
-              bottom: 60,
-            }}
+            margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
           >
             <defs>
               <linearGradient id="barGradient1" x1="0" y1="0" x2="0" y2="1">
@@ -135,11 +137,7 @@ export const SectorChart = ({
             <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" opacity={0.5} radius={8} />
             <XAxis
               dataKey="name"
-              tick={{
-                fontSize: 12,
-                fill: 'var(--color-text)',
-                fontWeight: 600
-              }}
+              tick={{ fontSize: 12, fill: 'var(--color-text)', fontWeight: 600 }}
               stroke="var(--color-border)"
               height={60}
               interval={0}
@@ -147,11 +145,7 @@ export const SectorChart = ({
             />
             <YAxis
               domain={[0, 5]}
-              tick={{
-                fontSize: 12,
-                fill: 'var(--color-text)',
-                fontWeight: 600
-              }}
+              tick={{ fontSize: 12, fill: 'var(--color-text)', fontWeight: 600 }}
               stroke="var(--color-border)"
               tickFormatter={(value) => value.toFixed(1)}
               label={{ value: 'Nota (0-5)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' }}}

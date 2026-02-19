@@ -1,0 +1,1 @@
+Backup dos scripts removidos para produção.

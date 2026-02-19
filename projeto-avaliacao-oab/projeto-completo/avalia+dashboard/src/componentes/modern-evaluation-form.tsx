@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
-
-const setores = ["Financeiro / Tesouraria", "Tecnologia da Informação", "TED", "ESA/MA"]
+import { api, Setor } from "../lib/apiClient"
 
 const avaliacaoCategories = [
   {
@@ -94,6 +93,7 @@ export default function ModernEvaluationForm() {
   const [currentStep, setCurrentStep] = useState(0)
   const [foiEnviado, setFoiEnviado] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [setores, setSetores] = useState<Setor[]>([])
 
   const [nome, setNome] = useState("")
   const [oab, setOab] = useState("")
@@ -115,6 +115,17 @@ export default function ModernEvaluationForm() {
     const params = new URLSearchParams(window.location.search)
     const processo = params.get("processo")
     if (processo) setNumeroProcesso(processo)
+
+    // Carrega setores do banco
+    const fetchSetores = async () => {
+      try {
+        const data = await api.getSetores()
+        setSetores(data)
+      } catch (error) {
+        console.error('Erro ao carregar setores:', error)
+      }
+    }
+    fetchSetores()
   }, [])
 
   const resetarFormulario = () => {
@@ -293,16 +304,16 @@ export default function ModernEvaluationForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {setores.map((setor) => (
                     <button
-                      key={setor}
+                      key={setor.id}
                       className={`h-16 text-left justify-start p-4 transition-all border rounded-md ${
-                        setorSelecionado === setor
+                        setorSelecionado === setor.nome
                           ? "bg-blue-600 text-white border-blue-600 ring-2 ring-blue-500 ring-offset-2"
                           : "bg-white text-gray-700 border-gray-300 hover:border-blue-500"
                       }`}
-                      onClick={() => setSetorSelecionado(setor)}
+                      onClick={() => setSetorSelecionado(setor.nome)}
                     >
                       <div>
-                        <div className="font-medium">{setor}</div>
+                        <div className="font-medium">{setor.nome}</div>
                         <div className="text-xs opacity-75 mt-1">Clique para selecionar</div>
                       </div>
                     </button>

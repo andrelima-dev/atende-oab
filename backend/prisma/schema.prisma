@@ -10,6 +10,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Tabela de usuários para acesso ao dashboard
+model Usuario {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  senha      String   // Senha hasheada com bcrypt
+  nome       String
+  ativo      Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("usuarios")
+}
+
 // Tabela de setores para evitar duplicidade
 model Setor {
   id         Int         @id @default(autoincrement())
