@@ -38,6 +38,21 @@ class ApiClient {
     this.baseUrl = baseUrl;
   }
 
+  // Método para obter headers com autenticação
+  private getAuthHeaders(): HeadersInit {
+    const token = localStorage.getItem('token');
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    };
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    return headers;
+  }
+
+  // Criar avaliação (público - sem autenticação necessária)
   async create(avaliacao: AvaliacaoInput): Promise<ApiResponse<Avaliacao>> {
     try {
       const response = await fetch(`${this.baseUrl}/avaliacoes`, {
@@ -61,25 +76,59 @@ class ApiClient {
     }
   }
 
-  async getAll(): Promise<Avaliacao[]> {
+  // Buscar todas as avaliações (protegido - requer autenticação)
+  async getAll(params?: {
+    page?: number;
+    limit?: number;
+    setor?: string;
+    dataInicio?: string;
+    dataFim?: string;
+    busca?: string;
+  }): Promise<{ data: Avaliacao[]; pagination?: any }> {
     try {
-      const response = await fetch(`${this.baseUrl}/avaliacoes`);
+      // Construir query string
+      const queryParams = new URLSearchParams();
+      if (params?.page) queryParams.append('page', params.page.toString());
+      if (params?.limit) queryParams.append('limit', params.limit.toString());
+      if (params?.setor) queryParams.append('setor', params.setor);
+      if (params?.dataInicio) queryParams.append('dataInicio', params.dataInicio);
+      if (params?.dataFim) queryParams.append('dataFim', params.dataFim);
+      if (params?.busca) queryParams.append('busca', params.busca);
+
+      const queryString = queryParams.toString();
+      const url = `${this.baseUrl}/avaliacoes${queryString ? `?${queryString}` : ''}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.getAuthHeaders(),
+      });
+
       const result = await response.json();
 
       if (!response.ok) {
         throw new Error(result.error || result.message || 'Erro ao buscar avaliações');
       }
 
-      return result.data || [];
+      return { 
+        data: result.data || [], 
+        pagination: result.pagination 
+      };
     } catch (error) {
       console.error('Erro ao buscar avaliações:', error);
       throw error;
     }
   }
 
+  // Buscar setores (público - não requer autenticação)
   async getSetores(): Promise<Setor[]> {
     try {
-      const response = await fetch(`${this.baseUrl}/avaliacoes/setores`);
+      const response = await fetch(`${this.baseUrl}/avaliacoes/setores`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
       const result = await response.json();
 
       if (!response.ok) {
@@ -89,6 +138,80 @@ class ApiClient {
       return result.data || [];
     } catch (error) {
       console.error('Erro ao buscar setores:', error);
+      throw error;
+    }
+  }
+
+  // Buscar estatísticas (protegido - requer autenticação)
+  async getEstatisticas(params?: {
+    dataInicio?: string;
+    dataFim?: string;
+  }): Promise<any> {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params?.dataInicio) queryParams.append('dataInicio', params.dataInicio);
+      if (params?.dataFim) queryParams.append('dataFim', params.dataFim);
+
+      const queryString = queryParams.toString();
+      const url = `${this.baseUrl}/avaliacoes/estatisticas${queryString ? `?${queryString}` : ''}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.getAuthHeaders(),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || result.message || 'Erro ao buscar estatísticas');
+      }
+
+      return result.data || {};
+    } catch (error) {
+      console.error('Erro ao buscar estatísticas:', error);
+      throw error;
+    }
+  }
+
+  // Deletar avaliação (protegido - requer autenticação)
+  async delete(id: number): Promise<ApiResponse<any>> {
+    try {
+      const response = await fetch(`${this.baseUrl}/avaliacoes/${id}`, {
+        method: 'DELETE',
+        headers: this.getAuthHeaders(),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || result.message || 'Erro ao deletar avaliação');
+      }
+
+      return result;
+    } catch (error) {
+      console.error('Erro ao deletar avaliação:', error);
+      throw error;
+    }
+  }
+
+  // Atualizar avaliação (protegido - requer autenticação)
+  async update(id: number, avaliacao: Partial<AvaliacaoInput>): Promise<ApiResponse<Avaliacao>> {
+    try {
+      const response = await fetch(`${this.baseUrl}/avaliacoes/${id}`, {
+        method: 'PUT',
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify(avaliacao),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || result.message || 'Erro ao atualizar avaliação');
+      }
+
+      return result;
+    } catch (error) {
+      console.error('Erro ao atualizar avaliação:', error);
       throw error;
     }
   }

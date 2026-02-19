@@ -428,7 +428,7 @@ export const getEstatisticas = async (req: Request, res: Response) => {
   }
 };
 
-// Listar setores (protegido)
+// Listar setores (público - necessário para o formulário)
 export const getSetores = async (req: Request, res: Response) => {
   try {
     const setores = await prisma.setor.findMany({ 

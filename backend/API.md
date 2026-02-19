@@ -454,9 +454,11 @@ GET /api/avaliacoes/estatisticas?dataInicio=2026-02-01&dataFim=2026-02-28
 ---
 
 ### 15. Listar Setores
-**GET** `/api/avaliacoes/setores` 🔒
+**GET** `/api/avaliacoes/setores` ✅ Público
 
 Lista todos os setores com contagem de avaliações.
+
+> **Nota:** Esta rota é pública para permitir que o formulário de avaliação carregue a lista de setores.
 
 **Response 200:**
 ```json

@@ -54,8 +54,8 @@ const Index = () => {
   const handleRefresh = async () => {
     setLoading(true);
     try {
-      const data = await api.getAll();
-      setAvaliacaos(data || []);
+      const result = await api.getAll();
+      setAvaliacaos(result.data || []);
       setError(null);
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Erro ao buscar avaliações');

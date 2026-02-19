@@ -16,15 +16,15 @@ const router = Router();
 // POST /api/avaliacoes - Criar nova avaliação (público - formulário)
 router.post('/', createAvaliacao);
 
+// GET /api/avaliacoes/setores - Listar todos os setores (público - necessário para o formulário)
+router.get('/setores', getSetores);
+
 // Rotas protegidas (requerem autenticação)
 // GET /api/avaliacoes - Listar todas as avaliações com filtros e paginação
 router.get('/', autenticarToken, getAvaliacoes);
 
 // GET /api/avaliacoes/estatisticas - Estatísticas para o dashboard
 router.get('/estatisticas', autenticarToken, getEstatisticas);
-
-// GET /api/avaliacoes/setores - Listar todos os setores
-router.get('/setores', autenticarToken, getSetores);
 
 // GET /api/avaliacoes/:id - Buscar uma avaliação específica
 router.get('/:id', autenticarToken, getAvaliacaoById);
