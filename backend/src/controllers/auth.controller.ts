@@ -71,3 +71,188 @@ export const verificarToken = async (req: Request, res: Response): Promise<Respo
     return res.status(500).json({ error: 'Erro ao verificar token' });
   }
 };
+
+// Listar todos os usuários (protegido)
+export const listarUsuarios = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const usuarios = await prisma.usuario.findMany({
+      select: {
+        id: true,
+        email: true,
+        nome: true,
+        ativo: true,
+        created_at: true,
+        updated_at: true
+      },
+      orderBy: { created_at: 'desc' }
+    });
+    return res.json({ success: true, data: usuarios });
+  } catch (error) {
+    console.error('Erro ao listar usuários:', error);
+    return res.status(500).json({ error: 'Erro ao listar usuários' });
+  }
+};
+
+// Buscar usuário por ID (protegido)
+export const buscarUsuario = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { id } = req.params;
+    const usuarioId = Array.isArray(id) ? id[0] : id;
+    
+    const usuario = await prisma.usuario.findUnique({
+      where: { id: parseInt(usuarioId) },
+      select: {
+        id: true,
+        email: true,
+        nome: true,
+        ativo: true,
+        created_at: true,
+        updated_at: true
+      }
+    });
+
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+
+    return res.json({ success: true, data: usuario });
+  } catch (error) {
+    console.error('Erro ao buscar usuário:', error);
+    return res.status(500).json({ error: 'Erro ao buscar usuário' });
+  }
+};
+
+// Atualizar usuário (protegido)
+export const atualizarUsuario = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { id } = req.params;
+    const usuarioId = Array.isArray(id) ? id[0] : id;
+    const { email, nome, senha, ativo } = req.body;
+
+    // Verificar se o usuário existe
+    const usuarioExistente = await prisma.usuario.findUnique({
+      where: { id: parseInt(usuarioId) }
+    });
+
+    if (!usuarioExistente) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+
+    // Verificar se o email já está em uso por outro usuário
+    if (email && email !== usuarioExistente.email) {
+      const emailEmUso = await prisma.usuario.findUnique({
+        where: { email: email.toLowerCase() }
+      });
+      if (emailEmUso) {
+        return res.status(400).json({ error: 'Este email já está cadastrado' });
+      }
+    }
+
+    // Preparar dados para atualização
+    const dataToUpdate: any = {};
+    if (email !== undefined) dataToUpdate.email = email.toLowerCase();
+    if (nome !== undefined) dataToUpdate.nome = nome;
+    if (ativo !== undefined) dataToUpdate.ativo = ativo;
+    
+    // Atualizar senha se fornecida
+    if (senha) {
+      dataToUpdate.senha = await bcrypt.hash(senha, 10);
+    }
+
+    const usuarioAtualizado = await prisma.usuario.update({
+      where: { id: parseInt(usuarioId) },
+      data: dataToUpdate,
+      select: {
+        id: true,
+        email: true,
+        nome: true,
+        ativo: true,
+        created_at: true,
+        updated_at: true
+      }
+    });
+
+    return res.json({ success: true, data: usuarioAtualizado });
+  } catch (error) {
+    console.error('Erro ao atualizar usuário:', error);
+    return res.status(500).json({ error: 'Erro ao atualizar usuário' });
+  }
+};
+
+// Deletar usuário (protegido)
+export const deletarUsuario = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { id } = req.params;
+    const usuarioId = Array.isArray(id) ? id[0] : id;
+    const usuarioLogado = req.usuario;
+
+    // Verificar se está tentando deletar a si mesmo
+    if (usuarioLogado && usuarioLogado.id === parseInt(usuarioId)) {
+      return res.status(400).json({ error: 'Você não pode deletar sua própria conta' });
+    }
+
+    // Verificar se o usuário existe
+    const usuarioExistente = await prisma.usuario.findUnique({
+      where: { id: parseInt(usuarioId) }
+    });
+
+    if (!usuarioExistente) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+
+    await prisma.usuario.delete({
+      where: { id: parseInt(usuarioId) }
+    });
+
+    return res.json({ success: true, message: 'Usuário deletado com sucesso' });
+  } catch (error) {
+    console.error('Erro ao deletar usuário:', error);
+    return res.status(500).json({ error: 'Erro ao deletar usuário' });
+  }
+};
+
+// Alternar status do usuário (ativar/desativar) (protegido)
+export const toggleUsuarioStatus = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { id } = req.params;
+    const usuarioId = Array.isArray(id) ? id[0] : id;
+    const usuarioLogado = req.usuario;
+
+    // Verificar se está tentando desativar a si mesmo
+    if (usuarioLogado && usuarioLogado.id === parseInt(usuarioId)) {
+      return res.status(400).json({ error: 'Você não pode desativar sua própria conta' });
+    }
+
+    // Buscar usuário atual
+    const usuario = await prisma.usuario.findUnique({
+      where: { id: parseInt(usuarioId) }
+    });
+
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+
+    // Alternar o status
+    const usuarioAtualizado = await prisma.usuario.update({
+      where: { id: parseInt(usuarioId) },
+      data: { ativo: !usuario.ativo },
+      select: {
+        id: true,
+        email: true,
+        nome: true,
+        ativo: true,
+        created_at: true,
+        updated_at: true
+      }
+    });
+
+    return res.json({ 
+      success: true, 
+      data: usuarioAtualizado,
+      message: `Usuário ${usuarioAtualizado.ativo ? 'ativado' : 'desativado'} com sucesso`
+    });
+  } catch (error) {
+    console.error('Erro ao alternar status do usuário:', error);
+    return res.status(500).json({ error: 'Erro ao alternar status do usuário' });
+  }
+};
