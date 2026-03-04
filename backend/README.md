@@ -9,3 +9,4 @@ Todos scripts de teste, seed e limpeza foram removidos.
 1. Instale dependências: `npm install`
 2. Configure `.env` com o banco
 3. Rode: `npm run dev`
+FFFFFF
